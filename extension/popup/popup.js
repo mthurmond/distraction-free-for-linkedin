@@ -1,8 +1,8 @@
 const githubURL = 'https://github.com/';
 
 const mattURL = `${githubURL}/mthurmond`;
-const gmailInboxHiderURL = `${githubURL}/mthurmond/gmail-inbox-hider`;
-const feedbackURL = `${githubURL}/mthurmond/gmail-inbox-hider/issues`;
+const distractionFreeLinkedinURL = `${githubURL}/mthurmond/distraction-free-linkedin`;
+const feedbackURL = `${githubURL}/mthurmond/distraction-free-linkedin/issues`;
 
 const manageExtensionsURL = 'chrome://extensions/';
 const extensionsDetailsURL = `${manageExtensionsURL}?id=koobmglbcddgeoopgphanmhjppfaehaa`;
@@ -12,8 +12,8 @@ document.querySelector('.feedbackLink').addEventListener('click', function() {
     chrome.tabs.create({url: feedbackURL})
 });
 
-document.querySelector('.gmailInboxHiderLink').addEventListener('click', function() {
-    chrome.tabs.create({url: gmailInboxHiderURL})
+document.querySelector('.distractionFreeLinkedinLink').addEventListener('click', function() {
+    chrome.tabs.create({url: distractionFreeLinkedinURL})
 });
 
 document.querySelector('.extensionsDetailsLink').addEventListener('click', function() {

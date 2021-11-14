@@ -1,9 +1,9 @@
-# Gmail inbox hider
- [Install the chrome extension](https://chrome.google.com/webstore/detail/slack-hider/ojfkenmmieminleikclgocedgpggeecp) so you can use gmail in a calmer, more intentional way. 
+# Distraction free Liinkedin
+ [Install the chrome extension]() so you can use linkedin in a calmer, more intentional way. 
  
- The extension adds a button to gmail that lets you hide your inbox whenever you want. While your inbox is hidden, you can still use the top search bar to jump to specific emails or conversations, but the inbox and red alert badges won't appear. Since this is a browser extension, it only works if you use gmail's web app.
+ The extension removes distractions from LinkedIn. This is a chrome browser extension so only works if you're using the linkedin site in chrome. 
  
-See a problem? Please [file any issues here](https://github.com/mthurmond/slack-hider/issues). 
+See a problem? Please [file any issues here](https://github.com/mthurmond/distraction-free-linkedin/issues). 
 
 # Other helpful extensions
 Do you use slack? I also created [slack-hider](https://github.com/mthurmond/slack-hider) so you can hide your slacks whenever you want. 
@@ -14,6 +14,6 @@ Looking for other helpful extensions? I use and recommend all of these:
 3. [uBlock](https://github.com/gorhill/uBlock) for ad blocking 
 
  # Demo
- ![Gmail inbox hider gif]()
+ ![Distraction free LinkedIn gif]()
 
  Demo gif coming soon

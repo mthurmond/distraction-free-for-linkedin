@@ -1,7 +1,7 @@
 {
-    "name": "Gmail inbox hider",
-    "version": "1.7",
-    "description": "Hide your gmail inbox to focus and get in the flow. Unhide it whenever you're ready.",
+    "name": "Distraction free Linkedin",
+    "version": "1.0",
+    "description": "Removes distractions from Linkedin like the newsfeed, alerts, and suggested people.",
     "manifest_version": 3,
 
     "action": {
@@ -20,7 +20,7 @@
     },
 
     "content_scripts": [{
-        "matches": ["https://mail.google.com/mail/*"],
+        "matches": ["https://linkedin.com/*"],
         "css": ["hider/hider-button.css"],
         "js": ["hider/hider.js"]
     }]
