@@ -1,0 +1,5 @@
+*.zip
+screenshot*
+roadmap.md
+.DS_Store
+scratch.html
