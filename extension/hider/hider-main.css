@@ -1,6 +1,16 @@
 /* adjust the styling of native linkedin classes */
 
- /* remove news module */
+/* hide newsfeed updates */
+.feed-shared-update-v2 { 
+    visibility: hidden;
+}
+
+/* hide right rail on homepage, which includes the news module, ads, and footer*/
+.scaffold-layout__aside { 
+    visibility: hidden;
+}
+
+/* remove news module */
 .news-module { 
     visibility: hidden;
 }
@@ -10,7 +20,7 @@
     visibility: hidden;
 }
 
-/* remove all ads */
+/* remove ads */
 .ad-banner-container { 
     visibility: hidden;
 }

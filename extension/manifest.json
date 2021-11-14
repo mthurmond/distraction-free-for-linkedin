@@ -20,9 +20,13 @@
     },
 
     "content_scripts": [{
-        "matches": ["https://linkedin.com/*"],
+        "matches": ["https://www.linkedin.com/*"],
         "css": ["hider/hider-button.css"],
         "js": ["hider/hider.js"]
-    }]
+    }],
 
+    "web_accessible_resources": [{
+        "resources": ["hider/hider-main.css"], 
+        "matches": ["https://www.linkedin.com/*"]
+    }]
 }
