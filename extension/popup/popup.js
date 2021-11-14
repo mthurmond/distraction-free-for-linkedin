@@ -5,7 +5,7 @@ const distractionFreeLinkedinURL = `${githubURL}/mthurmond/distraction-free-link
 const feedbackURL = `${githubURL}/mthurmond/distraction-free-linkedin/issues`;
 
 const manageExtensionsURL = 'chrome://extensions/';
-const extensionsDetailsURL = `${manageExtensionsURL}?id=koobmglbcddgeoopgphanmhjppfaehaa`;
+const extensionsDetailsURL = `${manageExtensionsURL}?id=kigfnbfbpfpgphbocdkmeablbgdbpfke`;
 
 //open the appropriate new tab when the user clicks each link
 document.querySelector('.feedbackLink').addEventListener('click', function() {
