@@ -1,0 +1,20 @@
+/* adjust the styling of native linkedin classes */
+
+ /* remove news module */
+.news-module { 
+    visibility: hidden;
+}
+
+/* remove right column on profile pages, includes suggestions and linkedin learning */
+.pv-content__right-rail { 
+    visibility: hidden;
+}
+
+/* remove all ads */
+.ad-banner-container { 
+    visibility: hidden;
+}
+
+#ads-container { 
+    visibility: hidden;
+}
