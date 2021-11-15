@@ -5,13 +5,13 @@
     visibility: hidden;
 }
 
-/* hide right rail on homepage, which includes the news module, ads, and footer*/
-.scaffold-layout__aside { 
+/* hide newsfeed "new posts" button */
+.feed-new-update-pill { 
     visibility: hidden;
 }
 
-/* remove news module */
-.news-module { 
+/* hide right rail on homepage, which includes the news module, ads, and footer*/
+.scaffold-layout__aside { 
     visibility: hidden;
 }
 
