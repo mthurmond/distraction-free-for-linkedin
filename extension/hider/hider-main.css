@@ -28,3 +28,8 @@
 #ads-container { 
     visibility: hidden;
 }
+
+/* adjust color of notifications */
+/* .notification-badge { 
+    background-color: #0a66c2 !important;
+} */
