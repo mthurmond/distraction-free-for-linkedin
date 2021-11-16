@@ -30,6 +30,6 @@
 }
 
 /* adjust color of notifications */
-/* .notification-badge { 
+.notification-badge.notification-badge--show { 
     background-color: #0a66c2 !important;
-} */
+}
