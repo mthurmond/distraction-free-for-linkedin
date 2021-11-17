@@ -16,9 +16,9 @@ const checkForBody = setInterval(function () {
 
 const checkForTitle = setInterval(function () {
 
-    if (
-        document.title
-    ) {
+    if (document.title) {
+
+        clearInterval(checkForTitle);
 
         document.title = 'LinkedIn';
 
