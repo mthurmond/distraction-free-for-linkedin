@@ -1,5 +1,5 @@
 # Distraction free Linkedin
- [Install the chrome extension]() so you can use linkedin in a calmer, more intentional way. 
+ [Install the chrome extension](https://chrome.google.com/webstore/detail/distraction-free-linkedin/kigfnbfbpfpgphbocdkmeablbgdbpfke) so you can use linkedin in a calmer, more intentional way. 
  
  The extension removes distractions from LinkedIn. This is a chrome browser extension so only works if you're using the linkedin site in chrome. 
  
