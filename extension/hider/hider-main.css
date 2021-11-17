@@ -33,3 +33,9 @@
 .notification-badge.notification-badge--show { 
     background-color: #0a66c2 !important;
 }
+
+/* adjust color of message pane's msg count */
+.msg-overlay-bubble-header__unread-count { 
+    background-color: #000000 !important;
+    border-color: darkgrey;
+}
