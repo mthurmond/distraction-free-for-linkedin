@@ -1,4 +1,5 @@
-const checkForBody = setInterval(function () {
+ //load stylesheet after body loads
+ const checkForBody = setInterval(function () {
 
     if (document.body) {
 
@@ -14,6 +15,7 @@ const checkForBody = setInterval(function () {
 
 }, 100);
 
+//remove message count from title
 const checkForTitle = setInterval(function () {
 
     if (document.title) {
@@ -32,6 +34,34 @@ const checkForTitle = setInterval(function () {
         titleObserver.observe(
             document.querySelector('title'),
             { characterData: true, childList: true }
+        );
+
+    }
+
+}, 100);
+
+//always show no messages favicon
+const noMessageFavicon = chrome.runtime.getURL('/hider/favicon-no-messages.ico');
+
+const checkForFavicon = setInterval(function () {
+
+    if (document.querySelector('link[rel*="icon"]').href) {
+
+        clearInterval(checkForFavicon);
+        
+        document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
+
+        //activate the mutation observer
+        faviconObserver = new MutationObserver(function(mutations) {
+            if (document.querySelector('link[rel*="icon"]').href != noMessageFavicon) {
+                document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
+            } 
+        });
+    
+        //set mutation observer that swaps the "no message" favicon back in if it's ever changed while messages are hidden. 
+        faviconObserver.observe(
+            document.querySelector('link[rel*="icon"]'),
+            {characterData: true, attributes: true}
         );
 
     }
