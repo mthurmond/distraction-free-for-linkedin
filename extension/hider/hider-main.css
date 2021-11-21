@@ -1,10 +1,5 @@
 /* adjust the styling of native linkedin classes */
 
-/* hide newsfeed updates */
-.feed-shared-update-v2 { 
-    visibility: hidden;
-}
-
 /* hide newsfeed "new posts" button */
 .feed-new-update-pill { 
     visibility: hidden;
@@ -38,4 +33,14 @@
 .msg-overlay-bubble-header__unread-count { 
     background-color: #000000 !important;
     border-color: darkgrey;
+}
+
+/* style the newsfeed toggle button */
+#dfl_newsfeed-toggle-button {
+    display: block;
+    max-width: 100%;
+    width: 96%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 14px;  
 }

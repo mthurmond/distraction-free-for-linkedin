@@ -67,3 +67,72 @@ const checkForFavicon = setInterval(function () {
     }
 
 }, 100);
+
+let newsfeedToggleButton; 
+let showNewsfeed = false;
+
+function getNewsfeedControls() {
+    let newsfeedControls = document.getElementById('ember61'); 
+    return newsfeedControls;
+}
+
+function getNewsfeedUpdates() {
+    let newsfeedUpdate = document.getElementsByClassName('feed-shared-update-v2')[0];
+    let newsfeedUpdates = newsfeedUpdate.parentNode.parentNode;
+    return newsfeedUpdates;
+}
+
+function changeNewsfeedVisibility(desiredVisibility) {
+
+    let newsfeedControls = getNewsfeedControls();
+    newsfeedControls.style.visibility = desiredVisibility;
+    
+    let newsfeedUpdates = getNewsfeedUpdates();
+    newsfeedUpdates.style.visibility = desiredVisibility;
+    
+}
+
+function toggleNewsfeed(showNewsfeed) {
+
+    newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
+    const visibilityValue = showNewsfeed ? 'visible' : 'hidden';
+    changeNewsfeedVisibility(visibilityValue);
+
+}
+
+function addToggleButton() {
+    newsfeedToggleButton = document.createElement('button');
+    newsfeedToggleButton.id = 'dfl_newsfeed-toggle-button';
+    newsfeedToggleButton.classList.add('artdeco-button', 'mb2');
+    newsfeedToggleButton.innerHTML = 'Show newsfeed';
+
+    // call "toggleNewsfeed" when button is clicked
+    newsfeedToggleButton.addEventListener('click', function (evt) {
+        // flip the showNewsfeed boolean to change the inbox state from it's prior state
+        newsfeedToggleButton.blur();
+        showNewsfeed = !showNewsfeed;
+        toggleNewsfeed(showNewsfeed);
+
+    });
+
+    let newsfeedElementControls = getNewsfeedControls();
+
+    newsfeedElementControls.insertAdjacentElement("beforebegin", newsfeedToggleButton);
+
+}
+
+//add button to hide/show newsfeed
+const checkForNewsfeed = setInterval(function () {
+
+    if (getNewsfeedUpdates()) {
+
+        clearInterval(checkForNewsfeed);
+
+        // initially hides newsfeed element
+        changeNewsfeedVisibility('hidden');
+
+        addToggleButton();
+
+    }
+
+}, 100);
