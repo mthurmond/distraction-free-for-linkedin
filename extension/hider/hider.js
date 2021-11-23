@@ -82,21 +82,21 @@ function getNewsfeedUpdates() {
     return newsfeedUpdates;
 }
 
-function changeNewsfeedVisibility(desiredVisibility) {
+function changeNewsfeedDisplay(desiredDisplay) {
 
     let newsfeedControls = getNewsfeedControls();
-    newsfeedControls.style.visibility = desiredVisibility;
+    newsfeedControls.style.display = desiredDisplay;
     
     let newsfeedUpdates = getNewsfeedUpdates();
-    newsfeedUpdates.style.visibility = desiredVisibility;
+    newsfeedUpdates.style.display = desiredDisplay;
     
 }
 
 function toggleNewsfeed(showNewsfeed) {
 
     newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
-    const visibilityValue = showNewsfeed ? 'visible' : 'hidden';
-    changeNewsfeedVisibility(visibilityValue);
+    const displayValue = showNewsfeed ? 'block' : 'none';
+    changeNewsfeedDisplay(displayValue);
 
 }
 
@@ -131,7 +131,7 @@ const checkForNewsfeed = setInterval(function () {
     ) {
 
         // initially hides newsfeed element
-        changeNewsfeedVisibility('hidden');
+        changeNewsfeedDisplay('none');
 
         addToggleButton();
 
