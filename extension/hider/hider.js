@@ -69,10 +69,10 @@ const checkForFavicon = setInterval(function () {
 }, 100);
 
 let newsfeedToggleButton; 
-let showNewsfeed = false;
+let showNewsfeed;
 
 function getNewsfeedControls() {
-    let newsfeedControls = document.getElementById('ember61'); 
+    let newsfeedControls = document.querySelector('main > .mb2.artdeco-dropdown--placement-bottom');
     return newsfeedControls;
 }
 
@@ -105,6 +105,7 @@ function addToggleButton() {
     newsfeedToggleButton.id = 'dfl_newsfeed-toggle-button';
     newsfeedToggleButton.classList.add('artdeco-button', 'mb2');
     newsfeedToggleButton.innerHTML = 'Show newsfeed';
+    showNewsfeed = false;
 
     // call "toggleNewsfeed" when button is clicked
     newsfeedToggleButton.addEventListener('click', function (evt) {
@@ -124,9 +125,10 @@ function addToggleButton() {
 //add button to hide/show newsfeed
 const checkForNewsfeed = setInterval(function () {
 
-    if (getNewsfeedUpdates()) {
-
-        clearInterval(checkForNewsfeed);
+    if (
+    document.getElementsByClassName('feed-shared-update-v2')[0]
+    && !document.getElementById('dfl_newsfeed-toggle-button') 
+    ) {
 
         // initially hides newsfeed element
         changeNewsfeedVisibility('hidden');
@@ -135,4 +137,4 @@ const checkForNewsfeed = setInterval(function () {
 
     }
 
-}, 100);
+}, 200);
