@@ -1,6 +1,6 @@
-//load stylesheet after body loads
+// declare stylesheet variable globally so it can be referenced in show/hide function
 
-let stylesheetElement;
+let newsfeedStylesheetElement; 
 
 const checkForHead = setInterval(function () {
 
@@ -11,16 +11,16 @@ const checkForHead = setInterval(function () {
         const mainStylesheetUrl = chrome.runtime.getURL('hider/hider-main.css');
         const mainStylesheetElement = document.createElement('link');
         mainStylesheetElement.rel = 'stylesheet';
-        mainStylesheetElement.setAttribute('href', mainStylesheetUrl);
         mainStylesheetElement.setAttribute('id', "dfl__main-stylesheet");
+        mainStylesheetElement.setAttribute('href', mainStylesheetUrl);
         document.head.appendChild(mainStylesheetElement);
 
-        const stylesheetUrl = chrome.runtime.getURL('hider/hider-newsfeed.css');
-        stylesheetElement = document.createElement('link');
-        stylesheetElement.rel = 'stylesheet';
-        stylesheetElement.setAttribute('href', stylesheetUrl);
-        stylesheetElement.setAttribute('id', "dfl__newsfeed-stylesheet");
-        document.head.appendChild(stylesheetElement);
+        const newsfeedStylesheetUrl = chrome.runtime.getURL('hider/hider-newsfeed.css');
+        newsfeedStylesheetElement = document.createElement('link');
+        newsfeedStylesheetElement.rel = 'stylesheet';
+        newsfeedStylesheetElement.setAttribute('id', "dfl__newsfeed-stylesheet");
+        newsfeedStylesheetElement.setAttribute('href', newsfeedStylesheetUrl);
+        document.head.appendChild(newsfeedStylesheetElement);
 
     }
 
@@ -89,9 +89,9 @@ function toggleNewsfeed(showNewsfeed) {
     newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
 
     if (showNewsfeed) {
-        stylesheetElement.setAttribute('disabled', true);
+        newsfeedStylesheetElement.setAttribute('disabled', true);
     } else {
-        stylesheetElement.removeAttribute('disabled');
+        newsfeedStylesheetElement.removeAttribute('disabled');
     }
 
 }
