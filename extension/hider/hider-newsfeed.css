@@ -1,0 +1,19 @@
+/* hide newsfeed loading icon */
+.artdeco-loader.artdeco-loader--small.ember-view { 
+    visibility: hidden;
+}
+
+/* hide newsfeed controls */
+main > .mb2.artdeco-dropdown--placement-bottom {
+    visibility: hidden;
+}
+
+/* hide newsfeed */
+.feed-shared-update-v2 {
+    visibility: hidden;
+}
+
+/* hide newsfeed "new posts" button */
+.feed-new-update-pill { 
+    visibility: hidden;
+}

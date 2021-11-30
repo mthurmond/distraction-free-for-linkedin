@@ -1,10 +1,5 @@
 /* adjust the styling of native linkedin classes */
 
-/* hide newsfeed "new posts" button */
-.feed-new-update-pill { 
-    visibility: hidden;
-}
-
 /* hide right rail on homepage, which includes the news module, ads, and footer*/
 .scaffold-layout__aside { 
     visibility: hidden;
@@ -44,3 +39,30 @@
     margin-right: auto;
     margin-top: 14px;  
 }
+
+/* style the network suggestions toggle button */
+/* #dfl_network-suggestions-toggle {
+    display: block;
+    max-width: 100%;
+    width: 25%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;  
+} */
+
+/* styles below initially hide elements before in-line show/hide applied */
+
+/* suggestions loader bar  */
+/* main > div.artdeco-loader--small.ember-view{
+    display: none;
+} */
+
+/* people you may know suggestions */
+/* .discover-cohort-view--list-item {
+    display: none;
+} */
+
+/* other suggestions list */
+/* div[data-launchpad-scroll-anchor="pymk"] {
+    display: none;
+} */

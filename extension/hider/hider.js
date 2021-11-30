@@ -1,15 +1,26 @@
- //load stylesheet after body loads
- const checkForBody = setInterval(function () {
+//load stylesheet after body loads
 
-    if (document.body) {
+let stylesheetElement;
 
-        clearInterval(checkForBody);
-        const stylesheetUrl = chrome.runtime.getURL('hider/hider-main.css');    
-        const stylesheetElement = document.createElement('link');
+const checkForHead = setInterval(function () {
+
+    if (document.head) {
+
+        clearInterval(checkForHead);
+
+        const mainStylesheetUrl = chrome.runtime.getURL('hider/hider-main.css');
+        const mainStylesheetElement = document.createElement('link');
+        mainStylesheetElement.rel = 'stylesheet';
+        mainStylesheetElement.setAttribute('href', mainStylesheetUrl);
+        mainStylesheetElement.setAttribute('id', "dfl__main-stylesheet");
+        document.head.appendChild(mainStylesheetElement);
+
+        const stylesheetUrl = chrome.runtime.getURL('hider/hider-newsfeed.css');
+        stylesheetElement = document.createElement('link');
         stylesheetElement.rel = 'stylesheet';
         stylesheetElement.setAttribute('href', stylesheetUrl);
-        stylesheetElement.setAttribute('id', "hider__main-stylesheet");
-        document.body.appendChild(stylesheetElement);
+        stylesheetElement.setAttribute('id', "dfl__newsfeed-stylesheet");
+        document.head.appendChild(stylesheetElement);
 
     }
 
@@ -25,12 +36,12 @@ const checkForTitle = setInterval(function () {
         document.title = 'LinkedIn';
 
         //activate the mutation observer
-        titleObserver = new MutationObserver(function(mutations) {
+        titleObserver = new MutationObserver(function (mutations) {
             if (document.title != 'LinkedIn') {
                 document.title = 'LinkedIn';
-            } 
+            }
         });
-    
+
         titleObserver.observe(
             document.querySelector('title'),
             { characterData: true, childList: true }
@@ -48,93 +59,148 @@ const checkForFavicon = setInterval(function () {
     if (document.querySelector('link[rel*="icon"]').href) {
 
         clearInterval(checkForFavicon);
-        
+
         document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
 
         //activate the mutation observer
-        faviconObserver = new MutationObserver(function(mutations) {
+        faviconObserver = new MutationObserver(function (mutations) {
             if (document.querySelector('link[rel*="icon"]').href != noMessageFavicon) {
                 document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
-            } 
+            }
         });
-    
+
         //set mutation observer that swaps the "no message" favicon back in if it's ever changed while messages are hidden. 
         faviconObserver.observe(
             document.querySelector('link[rel*="icon"]'),
-            {characterData: true, attributes: true}
+            { characterData: true, attributes: true }
         );
 
     }
 
 }, 100);
 
-let newsfeedToggleButton; 
-let showNewsfeed;
 
-function getNewsfeedControls() {
-    let newsfeedControls = document.querySelector('main > .mb2.artdeco-dropdown--placement-bottom');
-    return newsfeedControls;
-}
 
-function getNewsfeedUpdates() {
-    let newsfeedUpdate = document.getElementsByClassName('feed-shared-update-v2')[0];
-    let newsfeedUpdates = newsfeedUpdate.parentNode.parentNode;
-    return newsfeedUpdates;
-}
-
-function changeNewsfeedDisplay(desiredDisplay) {
-
-    let newsfeedControls = getNewsfeedControls();
-    newsfeedControls.style.display = desiredDisplay;
-    
-    let newsfeedUpdates = getNewsfeedUpdates();
-    newsfeedUpdates.style.display = desiredDisplay;
-    
-}
+let newsfeedToggleButton;
+let showNewsfeed = false;
 
 function toggleNewsfeed(showNewsfeed) {
 
     newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
-    const displayValue = showNewsfeed ? 'block' : 'none';
-    changeNewsfeedDisplay(displayValue);
+
+    if (showNewsfeed) {
+        stylesheetElement.setAttribute('disabled', true);
+    } else {
+        stylesheetElement.removeAttribute('disabled');
+    }
 
 }
 
-function addToggleButton() {
+function addNewsfeedToggleButton() {
     newsfeedToggleButton = document.createElement('button');
     newsfeedToggleButton.id = 'dfl_newsfeed-toggle-button';
     newsfeedToggleButton.classList.add('artdeco-button', 'mb2');
-    newsfeedToggleButton.innerHTML = 'Show newsfeed';
-    showNewsfeed = false;
-
-    // call "toggleNewsfeed" when button is clicked
+    newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
+    
     newsfeedToggleButton.addEventListener('click', function (evt) {
-        // flip the showNewsfeed boolean to change the inbox state from it's prior state
+       
         newsfeedToggleButton.blur();
         showNewsfeed = !showNewsfeed;
         toggleNewsfeed(showNewsfeed);
 
     });
 
-    let newsfeedElementControls = getNewsfeedControls();
-
-    newsfeedElementControls.insertAdjacentElement("beforebegin", newsfeedToggleButton);
+    let mainNewsfeedBox = document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0];
+    mainNewsfeedBox.insertAdjacentElement('afterend', newsfeedToggleButton);
 
 }
 
-//add button to hide/show newsfeed
 const checkForNewsfeed = setInterval(function () {
 
     if (
-    document.getElementsByClassName('feed-shared-update-v2')[0]
-    && !document.getElementById('dfl_newsfeed-toggle-button') 
+        document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0]
+        && !document.getElementById('dfl_newsfeed-toggle-button')
     ) {
-
-        // initially hides newsfeed element
-        changeNewsfeedDisplay('none');
-
-        addToggleButton();
-
+        addNewsfeedToggleButton();
     }
 
-}, 200);
+}, 50);
+
+
+
+
+
+
+
+
+
+
+// let networkSuggestionsToggleButton; 
+// let showPeopleYouKnowElement;
+
+// function getPeopleYouKnowElement() {
+//     let peopleYouKnowChild = document.getElementsByClassName('discover-cohort-view--list-item')[0];
+//     let peopleYouKnowParent = peopleYouKnowChild.parentNode
+//     return peopleYouKnowParent;
+
+// }
+
+// function getMoreSuggestionsElement() {
+//     let moreSuggestionsElement = document.querySelector('div[data-launchpad-scroll-anchor="pymk"]');
+//     return moreSuggestionsElement;
+
+// }
+
+// function changeNetworkSuggestionsDisplay(desiredDisplay) {
+
+//     let peopleYouKnowElement = getPeopleYouKnowElement();
+//     peopleYouKnowElement.style.display = desiredDisplay;
+
+//     let moreSuggestionsElement = getMoreSuggestionsElement();
+//     moreSuggestionsElement.style.display = desiredDisplay;
+
+// }
+
+// function toggleSuggestedPeople(showSuggestedPeople) {
+
+//     networkSuggestionsToggleButton.innerHTML = showSuggestedPeople ? 'Hide suggestions' : 'Show suggestions';
+//     const displayValue = showSuggestedPeople ? 'block' : 'none';
+//     changeNetworkSuggestionsDisplay(displayValue);
+
+// }
+
+// function addSuggestionsToggleButton() {
+
+//     networkSuggestionsToggleButton = document.createElement('button');
+//     networkSuggestionsToggleButton.id = 'dfl_network-suggestions-toggle';
+//     networkSuggestionsToggleButton.classList.add('artdeco-button', 'mb2');
+//     networkSuggestionsToggleButton.innerHTML = 'Show suggestions';
+//     showPeopleYouKnowElement = false;
+
+//     networkSuggestionsToggleButton.addEventListener('click', function (evt) {
+
+//         networkSuggestionsToggleButton.blur();
+//         showPeopleYouKnowElement = !showPeopleYouKnowElement;
+//         toggleSuggestedPeople(showPeopleYouKnowElement);
+
+//     });
+
+//     let peopleYouKnowElement = getPeopleYouKnowElement();
+
+//     peopleYouKnowElement.insertAdjacentElement('beforebegin', networkSuggestionsToggleButton);
+
+// }
+
+// const checkForNetworkSuggestions = setInterval(function () {
+
+//     if (
+//     document.getElementsByClassName('discover-cohort-view--list-item')[0]
+//     && !document.getElementById('dfl_network-suggestions-toggle') 
+//     ) {
+
+//         changeNetworkSuggestionsDisplay('none');
+//         addSuggestionsToggleButton();
+
+//     }
+
+// }, 200);
