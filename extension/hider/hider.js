@@ -1,6 +1,7 @@
 // declare stylesheet variable globally so it can be referenced in show/hide function
 
 let newsfeedStylesheetElement; 
+let networkStylesheetElement; 
 
 const checkForHead = setInterval(function () {
 
@@ -21,6 +22,13 @@ const checkForHead = setInterval(function () {
         newsfeedStylesheetElement.setAttribute('id', "dfl__newsfeed-stylesheet");
         newsfeedStylesheetElement.setAttribute('href', newsfeedStylesheetUrl);
         document.head.appendChild(newsfeedStylesheetElement);
+
+        const networkStylesheetUrl = chrome.runtime.getURL('hider/hider-network.css');
+        networkStylesheetElement = document.createElement('link');
+        networkStylesheetElement.rel = 'stylesheet';
+        networkStylesheetElement.setAttribute('id', "network-stylesheet");
+        networkStylesheetElement.setAttribute('href', networkStylesheetUrl);
+        document.head.appendChild(networkStylesheetElement);
 
     }
 
@@ -127,80 +135,47 @@ const checkForNewsfeed = setInterval(function () {
 }, 50);
 
 
+let networkToggleButton;
+let showNetwork = false;
 
+function toggleNetwork(showNetwork) {
 
+    networkToggleButton.innerHTML = showNetwork ? 'Hide network' : 'Show network';
 
+    if (showNetwork) {
+        networkStylesheetElement.setAttribute('disabled', true);
+    } else {
+        networkStylesheetElement.removeAttribute('disabled');
+    }
 
+}
 
+function addNetworkToggleButton() {
+    networkToggleButton = document.createElement('button');
+    networkToggleButton.id = 'dfl_network-toggle-button';
+    networkToggleButton.classList.add('artdeco-button', 'mb2');
+    networkToggleButton.innerHTML = showNetwork ? 'Hide network' : 'Show network';
+    
+    networkToggleButton.addEventListener('click', function (evt) {
+       
+        networkToggleButton.blur();
+        showNetwork = !showNetwork;
+        toggleNetwork(showNetwork);
 
+    });
 
+    let mainNetworkBox = document.getElementsByClassName('mn-invitations-preview')[0];
+    mainNetworkBox.insertAdjacentElement('afterend', networkToggleButton);
 
-// let networkSuggestionsToggleButton; 
-// let showPeopleYouKnowElement;
+}
 
-// function getPeopleYouKnowElement() {
-//     let peopleYouKnowChild = document.getElementsByClassName('discover-cohort-view--list-item')[0];
-//     let peopleYouKnowParent = peopleYouKnowChild.parentNode
-//     return peopleYouKnowParent;
+const checkForNetwork = setInterval(function () {
 
-// }
+    if (
+        document.getElementsByClassName('mn-invitations-preview')[0]
+        && !document.getElementById('dfl_network-toggle-button')
+    ) {
+        addNetworkToggleButton();
+    }
 
-// function getMoreSuggestionsElement() {
-//     let moreSuggestionsElement = document.querySelector('div[data-launchpad-scroll-anchor="pymk"]');
-//     return moreSuggestionsElement;
-
-// }
-
-// function changeNetworkSuggestionsDisplay(desiredDisplay) {
-
-//     let peopleYouKnowElement = getPeopleYouKnowElement();
-//     peopleYouKnowElement.style.display = desiredDisplay;
-
-//     let moreSuggestionsElement = getMoreSuggestionsElement();
-//     moreSuggestionsElement.style.display = desiredDisplay;
-
-// }
-
-// function toggleSuggestedPeople(showSuggestedPeople) {
-
-//     networkSuggestionsToggleButton.innerHTML = showSuggestedPeople ? 'Hide suggestions' : 'Show suggestions';
-//     const displayValue = showSuggestedPeople ? 'block' : 'none';
-//     changeNetworkSuggestionsDisplay(displayValue);
-
-// }
-
-// function addSuggestionsToggleButton() {
-
-//     networkSuggestionsToggleButton = document.createElement('button');
-//     networkSuggestionsToggleButton.id = 'dfl_network-suggestions-toggle';
-//     networkSuggestionsToggleButton.classList.add('artdeco-button', 'mb2');
-//     networkSuggestionsToggleButton.innerHTML = 'Show suggestions';
-//     showPeopleYouKnowElement = false;
-
-//     networkSuggestionsToggleButton.addEventListener('click', function (evt) {
-
-//         networkSuggestionsToggleButton.blur();
-//         showPeopleYouKnowElement = !showPeopleYouKnowElement;
-//         toggleSuggestedPeople(showPeopleYouKnowElement);
-
-//     });
-
-//     let peopleYouKnowElement = getPeopleYouKnowElement();
-
-//     peopleYouKnowElement.insertAdjacentElement('beforebegin', networkSuggestionsToggleButton);
-
-// }
-
-// const checkForNetworkSuggestions = setInterval(function () {
-
-//     if (
-//     document.getElementsByClassName('discover-cohort-view--list-item')[0]
-//     && !document.getElementById('dfl_network-suggestions-toggle') 
-//     ) {
-
-//         changeNetworkSuggestionsDisplay('none');
-//         addSuggestionsToggleButton();
-
-//     }
-
-// }, 200);
+}, 50);

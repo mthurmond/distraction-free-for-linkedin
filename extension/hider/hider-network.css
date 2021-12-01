@@ -1,0 +1,19 @@
+/* hide network loading icon */
+.artdeco-loader.artdeco-loader--small.ember-view { 
+    visibility: hidden;
+}
+
+/* hide network suggestions container */
+.discover-cohort-view--list-item { 
+    visibility: hidden;
+}
+
+/* hide network suggestions list */
+.artdeco-card.mb4.overflow-hidden:first-of-type { 
+    visibility: hidden;
+}
+
+/* hide more suggestions list */
+div[data-launchpad-scroll-anchor="pymk"] { 
+    visibility: hidden;
+}

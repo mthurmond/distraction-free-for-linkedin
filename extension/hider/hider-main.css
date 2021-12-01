@@ -41,28 +41,11 @@
 }
 
 /* style the network suggestions toggle button */
-/* #dfl_network-suggestions-toggle {
+#dfl_network-toggle-button {
     display: block;
     max-width: 100%;
-    width: 25%;
+    width: 90%;
     margin-left: auto;
     margin-right: auto;
     margin-top: 25px;  
-} */
-
-/* styles below initially hide elements before in-line show/hide applied */
-
-/* suggestions loader bar  */
-/* main > div.artdeco-loader--small.ember-view{
-    display: none;
-} */
-
-/* people you may know suggestions */
-/* .discover-cohort-view--list-item {
-    display: none;
-} */
-
-/* other suggestions list */
-/* div[data-launchpad-scroll-anchor="pymk"] {
-    display: none;
-} */
+}
