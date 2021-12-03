@@ -2,6 +2,7 @@
 
 let newsfeedStylesheetElement; 
 let networkStylesheetElement; 
+let jobsStylesheetElement; 
 
 const checkForHead = setInterval(function () {
 
@@ -26,9 +27,16 @@ const checkForHead = setInterval(function () {
         const networkStylesheetUrl = chrome.runtime.getURL('hider/hider-network.css');
         networkStylesheetElement = document.createElement('link');
         networkStylesheetElement.rel = 'stylesheet';
-        networkStylesheetElement.setAttribute('id', "network-stylesheet");
+        networkStylesheetElement.setAttribute('id', "dfl__network-stylesheet");
         networkStylesheetElement.setAttribute('href', networkStylesheetUrl);
         document.head.appendChild(networkStylesheetElement);
+
+        const jobsStylesheetUrl = chrome.runtime.getURL('hider/hider-jobs.css');
+        jobsStylesheetElement = document.createElement('link');
+        jobsStylesheetElement.rel = 'stylesheet';
+        jobsStylesheetElement.setAttribute('id', "dfl__jobs-stylesheet");
+        jobsStylesheetElement.setAttribute('href', jobsStylesheetUrl);
+        document.head.appendChild(jobsStylesheetElement);
 
     }
 
@@ -88,7 +96,7 @@ const checkForFavicon = setInterval(function () {
 }, 100);
 
 
-
+// let user toggle newsfeed
 let newsfeedToggleButton;
 let showNewsfeed = false;
 
@@ -134,6 +142,8 @@ const checkForNewsfeed = setInterval(function () {
 
 }, 50);
 
+
+// let user toggle network suggestions
 let networkToggleButton;
 let showNetwork = false;
 
@@ -187,6 +197,53 @@ const checkForNetwork = setInterval(function () {
         && document.querySelector('.artdeco-card.mb4.overflow-hidden:first-of-type')
     ) {
         document.getElementById('dfl_network-toggle-button').style.visibility = 'visible';
+    }
+
+}, 50);
+
+
+// let user toggle job recommendations
+let jobsToggleButton;
+let showJobs = false;
+
+function toggleJobs(showJobs) {
+
+    jobsToggleButton.innerHTML = showJobs ? 'Hide recommendations' : 'Show recommendations';
+
+    if (showJobs) {
+        jobsStylesheetElement.setAttribute('disabled', true);
+    } else {
+        jobsStylesheetElement.removeAttribute('disabled');
+    }
+
+}
+
+function addJobsToggleButton() {
+    jobsToggleButton = document.createElement('button');
+    jobsToggleButton.id = 'dfl_jobs-toggle-button';
+    jobsToggleButton.classList.add('artdeco-button', 'mb2');
+    jobsToggleButton.innerHTML = showJobs ? 'Hide recommendations' : 'Show recommendations';
+    
+    jobsToggleButton.addEventListener('click', function (evt) {
+       
+        jobsToggleButton.blur();
+        showJobs = !showJobs;
+        toggleJobs(showJobs);
+
+    });
+
+    let mainJobsBox = document.getElementsByClassName('jobs-home-recent-searches')[0];
+    mainJobsBox.insertAdjacentElement('afterend', jobsToggleButton);
+
+}
+
+const checkForJobs = setInterval(function () {
+
+    if (
+        document.getElementsByClassName('jobs-home-recent-searches')[0]
+        && !document.getElementById('dfl_jobs-toggle-button')
+    ) {
+        addJobsToggleButton();
     }
 
 }, 50);

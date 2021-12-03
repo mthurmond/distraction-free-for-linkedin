@@ -26,7 +26,7 @@
     }],
 
     "web_accessible_resources": [{
-        "resources": ["hider/hider-main.css", "hider/hider-newsfeed.css", "hider/hider-network.css", "hider/favicon-no-messages.ico"], 
+        "resources": ["hider/hider-main.css", "hider/hider-newsfeed.css", "hider/hider-network.css", "hider/hider-jobs.css",  "hider/favicon-no-messages.ico"], 
         "matches": ["https://www.linkedin.com/*"]
     }]
 }

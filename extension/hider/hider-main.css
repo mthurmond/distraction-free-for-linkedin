@@ -49,3 +49,13 @@
     margin-right: auto;
     margin-top: 25px;  
 }
+
+/* style the job recommendations toggle button */
+#dfl_jobs-toggle-button {
+    display: block;
+    max-width: 100%;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 25px;  
+}
