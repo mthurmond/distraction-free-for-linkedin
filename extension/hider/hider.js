@@ -134,7 +134,6 @@ const checkForNewsfeed = setInterval(function () {
 
 }, 50);
 
-
 let networkToggleButton;
 let showNetwork = false;
 
