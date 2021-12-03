@@ -1,8 +1,3 @@
-/* hide network loading icon */
-.artdeco-loader.artdeco-loader--small.ember-view { 
-    visibility: hidden;
-}
-
 /* hide network suggestions container */
 .discover-cohort-view--list-item { 
     visibility: hidden;

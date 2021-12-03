@@ -140,7 +140,7 @@ let showNetwork = false;
 
 function toggleNetwork(showNetwork) {
 
-    networkToggleButton.innerHTML = showNetwork ? 'Hide network' : 'Show network';
+    networkToggleButton.innerHTML = showNetwork ? 'Hide suggestions' : 'Show suggestions';
 
     if (showNetwork) {
         networkStylesheetElement.setAttribute('disabled', true);
@@ -154,7 +154,9 @@ function addNetworkToggleButton() {
     networkToggleButton = document.createElement('button');
     networkToggleButton.id = 'dfl_network-toggle-button';
     networkToggleButton.classList.add('artdeco-button', 'mb2');
-    networkToggleButton.innerHTML = showNetwork ? 'Hide network' : 'Show network';
+    networkToggleButton.innerHTML = showNetwork ? 'Hide suggestions' : 'Show suggestions';
+    // hide button by default so it appears on page before network suggestions do
+    networkToggleButton.style.visibility = 'hidden';
     
     networkToggleButton.addEventListener('click', function (evt) {
        
@@ -171,11 +173,21 @@ function addNetworkToggleButton() {
 
 const checkForNetwork = setInterval(function () {
 
+    // if top element in section appears and button not loaded, load button
     if (
         document.getElementsByClassName('mn-invitations-preview')[0]
         && !document.getElementById('dfl_network-toggle-button')
     ) {
         addNetworkToggleButton();
+    }
+
+    // if button is loaded and hidden, and suggestions element is loaded, make button visible
+    if (
+        document.getElementById('dfl_network-toggle-button')
+        && (document.getElementById('dfl_network-toggle-button').style.visibility == 'hidden')
+        && document.querySelector('.artdeco-card.mb4.overflow-hidden:first-of-type')
+    ) {
+        document.getElementById('dfl_network-toggle-button').style.visibility = 'visible';
     }
 
 }, 50);
