@@ -12,11 +12,11 @@
 
 /* remove ads */
 .ad-banner-container { 
-    visibility: hidden;
+    display: none;
 }
 
 #ads-container { 
-    visibility: hidden;
+    display: none;
 }
 
 /* adjust color of notifications */
