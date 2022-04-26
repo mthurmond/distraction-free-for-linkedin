@@ -1,8 +1,8 @@
 const githubURL = 'https://github.com/';
 
 const mattURL = `${githubURL}/mthurmond`;
-const distractionFreeLinkedinURL = `${githubURL}/mthurmond/distraction-free-linkedin`;
-const feedbackURL = `${githubURL}/mthurmond/distraction-free-linkedin/issues`;
+const distractionFreeLinkedinURL = `${githubURL}/mthurmond/distraction-free-for-linkedin`;
+const feedbackURL = `${githubURL}/mthurmond/distraction-free-for-linkedin/issues`;
 
 const manageExtensionsURL = 'chrome://extensions/';
 const extensionsDetailsURL = `${manageExtensionsURL}?id=kigfnbfbpfpgphbocdkmeablbgdbpfke`;

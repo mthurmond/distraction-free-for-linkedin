@@ -1,7 +1,7 @@
 {
-    "name": "Distraction free Linkedin",
+    "name": "Distraction free for Linkedin™",
     "version": "1.7",
-    "description": "Remove distractions from Linkedin like the newsfeed, alerts, and suggested people.",
+    "description": "Hide distractions on Linkedin™ when you need to focus.",
     "manifest_version": 3,
 
     "action": {
