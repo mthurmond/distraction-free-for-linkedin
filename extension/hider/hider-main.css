@@ -30,6 +30,11 @@
     border-color: darkgrey;
 }
 
+/* hide promo card that sometimes appears on jobs page */
+.jobs-home-galapagos-promo-board {
+    display: none;
+}
+
 /* style the newsfeed toggle button */
 #dfl_newsfeed-toggle-button {
     display: block;
@@ -58,9 +63,4 @@
     margin-left: auto;
     margin-right: auto;
     margin-top: 25px;  
-}
-
-/* hide promo card that sometimes appears on jobs page */
-.jobs-home-galapagos-promo-board {
-    display: none;
 }
