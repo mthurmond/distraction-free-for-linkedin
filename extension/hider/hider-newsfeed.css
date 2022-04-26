@@ -4,7 +4,7 @@ main > .mb2.artdeco-dropdown--placement-bottom {
 }
 
 /* hide newsfeed */
-.feed-shared-update-v2 {
+.feed-shared-update-v2:not(section.fixed-full > .feed-shared-update-v2) {
     visibility: hidden;
 }
 
