@@ -1,4 +1,4 @@
 /* hide job recs */
-main > section.artdeco-card.ember-view.mb2 { 
+div > section.artdeco-card.ember-view.mb2 { 
     visibility: hidden;
 }

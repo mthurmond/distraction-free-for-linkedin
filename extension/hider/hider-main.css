@@ -59,3 +59,8 @@
     margin-right: auto;
     margin-top: 25px;  
 }
+
+/* hide promo card that sometimes appears on jobs page */
+.jobs-home-galapagos-promo-board {
+    display: none;
+}
