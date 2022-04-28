@@ -5,7 +5,7 @@
 
 See a problem? Please [file any issues here](https://github.com/mthurmond/distraction-free-for-linkedin/issues). 
 
-This extension is not affiliated with or produced by LinkedIn™. The creator of it has gotten a lot of value from using LinkedIn in the past, and hopes that this extension will help you use it even more effectively. 
+This extension is not affiliated with or produced by LinkedIn™. The creator of it has gotten a lot of value from using LinkedIn™ in the past, and hopes that this extension will help you use it even more effectively. 
 
 # Other helpful extensions
 Do you use slack? I also created [slack-hider](https://github.com/mthurmond/slack-hider) so you can hide your slacks whenever you want. 
