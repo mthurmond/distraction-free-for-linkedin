@@ -136,6 +136,7 @@ const checkForNewsfeed = setInterval(function () {
     if (
         document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0]
         && !document.getElementById('dfl_newsfeed-toggle-button')
+        && !document.querySelector('div.org-admin') //set to false if on company admin page
     ) {
         addNewsfeedToggleButton();
     }
@@ -200,7 +201,6 @@ const checkForNetwork = setInterval(function () {
     }
 
 }, 50);
-
 
 // let user toggle job recommendations
 let jobsToggleButton;

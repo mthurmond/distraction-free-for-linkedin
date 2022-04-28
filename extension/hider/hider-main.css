@@ -1,11 +1,14 @@
 /* adjust the styling of native linkedin classes */
 
-/* hide right rail on homepage, which includes the news module, ads, and footer*/
-.scaffold-layout__aside { 
+/* hide right sidebar on homepage and jobs page */
+/* on homepage it includes the news module, ads, and footer */
+/* on jobs page it includes job seeker guidance and footer
+/* don't hide right rail on company admin page */
+.scaffold-layout__aside:not(div.org-admin aside.scaffold-layout__aside) { 
     visibility: hidden;
 }
 
-/* remove right column on profile pages, includes suggestions and linkedin learning */
+/* remove right sidebar on profile pages; it includes suggestions, linkedin learning, and footer */
 .pv-content__right-rail { 
     visibility: hidden;
 }
