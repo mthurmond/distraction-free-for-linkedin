@@ -3,7 +3,7 @@ main > .mb2.artdeco-dropdown--placement-bottom {
     visibility: hidden;
 }
 
-/* hide newsfeed */
+/* hide main newsfeed, but show individual post pages (section.fixed-full) */
 .feed-shared-update-v2:not(section.fixed-full > .feed-shared-update-v2) {
     visibility: hidden;
 }
