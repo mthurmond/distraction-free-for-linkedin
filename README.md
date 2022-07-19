@@ -7,17 +7,14 @@ See a problem? Please [file any issues here](https://github.com/mthurmond/distra
 
 This extension is not affiliated with or produced by LinkedIn™. The creator of it has gotten a lot of value from using LinkedIn™ in the past, and hopes that this extension will help you use it even more effectively. 
 
-# Other helpful extensions
-Do you use slack? I created [slack-hider](https://github.com/mthurmond/slack-hider) so you can hide your slacks whenever you want. 
+# My other extensions
+1. [slack-hider](https://github.com/mthurmond/slack-hider) so you can hide your slacks whenever you want. 
+2. [gmail-inbox-hider](https://github.com/mthurmond/gmail-inbox-hider) so you can hide your gmail inbox whenever you want. 
 
-Do you use gmail? I also built [gmail-inbox-hider](https://github.com/mthurmond/gmail-inbox-hider) so you can hide your gmail inbox whenever you want. 
-
-Looking for other helpful extensions? I use and recommend all of these: 
+# Extensions I recommend
 1. [News Feed Eradicator](https://github.com/jordwest/news-feed-eradicator) for Facebook
 2. [Distraction Free](https://chrome.google.com/webstore/detail/df-tube-distraction-free/mjdepdfccjgcndkmemponafgioodelna?hl=en) for Youtube
 3. [uBlock](https://github.com/gorhill/uBlock) for ad blocking 
 
 # Demo
-![Distraction free for LinkedIn™ gif]()
-
 Demo gif coming soon
