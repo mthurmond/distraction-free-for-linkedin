@@ -1,7 +1,6 @@
-*.zip
-screenshot*
 roadmap.md
 scratch.md
-.DS_Store
-scratch.html
+*.zip
+screenshot*
 chrome-store/
+.DS_Store
