@@ -1,8 +1,8 @@
 // declare stylesheet variable globally so it can be referenced in show/hide function
 
-let newsfeedStylesheetElement; 
-let networkStylesheetElement; 
-let jobsStylesheetElement; 
+let newsfeedStylesheetElement
+let networkStylesheetElement
+let jobsStylesheetElement
 
 const checkForHead = setInterval(function () {
 
@@ -117,9 +117,7 @@ function addNewsfeedToggleButton() {
     newsfeedToggleButton.id = 'dfl_newsfeed-toggle-button';
     newsfeedToggleButton.classList.add('artdeco-button', 'mb2');
     newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
-    
     newsfeedToggleButton.addEventListener('click', function (evt) {
-       
         newsfeedToggleButton.blur();
         showNewsfeed = !showNewsfeed;
         toggleNewsfeed(showNewsfeed);
@@ -167,9 +165,7 @@ function addNetworkToggleButton() {
     networkToggleButton.innerHTML = showNetwork ? 'Hide suggestions' : 'Show suggestions';
     // hide button by default so it appears on page before network suggestions do
     networkToggleButton.style.visibility = 'hidden';
-    
     networkToggleButton.addEventListener('click', function (evt) {
-       
         networkToggleButton.blur();
         showNetwork = !showNetwork;
         toggleNetwork(showNetwork);
@@ -206,16 +202,27 @@ const checkForNetwork = setInterval(function () {
 let jobsToggleButton;
 let showJobs = false;
 
-function toggleJobs(showJobs) {
-
+function toggleJobs() {
     jobsToggleButton.innerHTML = showJobs ? 'Hide recommendations' : 'Show recommendations';
-
     if (showJobs) {
         jobsStylesheetElement.setAttribute('disabled', true);
     } else {
         jobsStylesheetElement.removeAttribute('disabled');
     }
+}
 
+// toggle 'show more results' button on jobs page. should be hidden when jobs are hidden. 
+function toggleResultsButton() {
+    const jobPageSpans = document.querySelectorAll('span.artdeco-button__text')
+    // find 'show results' span then hide parent button
+    for (let i = 0; i < jobPageSpans.length; i++) {
+        if (jobPageSpans[i].textContent == '\n    Show more results\n') {
+            const showResultsButton = jobPageSpans[i].parentElement
+            const buttonVisibility = showJobs ? 'visible' : 'hidden';
+            showResultsButton.style.visibility = buttonVisibility
+            break
+        }
+    }
 }
 
 function addJobsToggleButton() {
@@ -223,27 +230,22 @@ function addJobsToggleButton() {
     jobsToggleButton.id = 'dfl_jobs-toggle-button';
     jobsToggleButton.classList.add('artdeco-button', 'mb2');
     jobsToggleButton.innerHTML = showJobs ? 'Hide recommendations' : 'Show recommendations';
-    
     jobsToggleButton.addEventListener('click', function (evt) {
-       
         jobsToggleButton.blur();
         showJobs = !showJobs;
-        toggleJobs(showJobs);
-
+        toggleJobs();
+        toggleResultsButton()
     });
-
     let mainJobsBox = document.getElementsByClassName('jobs-home-recent-searches')[0];
     mainJobsBox.insertAdjacentElement('afterend', jobsToggleButton);
-
 }
 
 const checkForJobs = setInterval(function () {
-
     if (
         document.getElementsByClassName('jobs-home-recent-searches')[0]
         && !document.getElementById('dfl_jobs-toggle-button')
     ) {
         addJobsToggleButton();
+        toggleResultsButton()
     }
-
 }, 50);
