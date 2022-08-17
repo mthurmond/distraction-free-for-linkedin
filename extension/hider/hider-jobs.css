@@ -3,3 +3,8 @@
 div > section.artdeco-card.ember-view.mb2:not(div.scaffold-layout__sidebar > section.artdeco-card.ember-view.mb2) { 
     visibility: hidden;
 }
+
+/* hide mock interview questions sidebar on saved jobs page */
+main > aside[aria-label="Additional information"] {
+    visibility: hidden;
+}
