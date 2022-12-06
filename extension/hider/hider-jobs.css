@@ -1,6 +1,5 @@
 /* hide job recs */
-/* don't hide company element on homepage's left sidebar */
-div > section.artdeco-card.ember-view.mb2:not(div.scaffold-layout__sidebar > section.artdeco-card.ember-view.mb2) { 
+main#main.scaffold-layout__main > div.scaffold-finite-scroll.scaffold-finite-scroll--infinite {
     visibility: hidden;
 }
 
