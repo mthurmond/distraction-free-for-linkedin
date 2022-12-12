@@ -15,7 +15,7 @@ Coming soon.
 They're all free, open source, and designed to help you get in the flow.
 
 1. [Distraction free for LinkedIn™](https://github.com/mthurmond/distraction-free-for-linkedin): Remove distractions from your LinkedIn™ experience.
-2. [Inbox hider for Gmail™](https://github.com/mthurmond/inbox-hider-for-gmail): Hide your Gmail™ inbox whenever you want.
+2. [Hide My Email for Gmail™](https://github.com/mthurmond/hide-my-email-for-gmail): Hide your Gmail™ emails whenever you want.
 3. [Slack hider](https://github.com/mthurmond/slack-hider): Hide your Slack™ messages whenever you want.
 
 # Other extensions I recommend
