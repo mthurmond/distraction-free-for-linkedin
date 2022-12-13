@@ -3,6 +3,7 @@
 let newsfeedStylesheetElement
 let networkStylesheetElement
 let jobsStylesheetElement
+let mainStylesheetElement
 
 const checkForHead = setInterval(function () {
 
@@ -11,7 +12,7 @@ const checkForHead = setInterval(function () {
         clearInterval(checkForHead);
 
         const mainStylesheetUrl = chrome.runtime.getURL('hider/hider-main.css');
-        const mainStylesheetElement = document.createElement('link');
+        mainStylesheetElement = document.createElement('link');
         mainStylesheetElement.rel = 'stylesheet';
         mainStylesheetElement.setAttribute('id', "dfl__main-stylesheet");
         mainStylesheetElement.setAttribute('href', mainStylesheetUrl);
@@ -247,5 +248,53 @@ const checkForJobs = setInterval(function () {
     ) {
         addJobsToggleButton();
         toggleResultsButton()
+    }
+}, 50);
+
+let masterToggleButton
+let showDfl = true
+
+function addMasterToggleButton() {
+    console.log('master button added')
+    masterToggleButton = document.createElement('button')
+    masterToggleButton.id = 'dfl_master-toggle-button'
+    masterToggleButton.classList.add('artdeco-button', 'mb2')
+    masterToggleButton.innerHTML = showDfl ? 'Turn DFL off' : 'Turn DFL on'
+    masterToggleButton.addEventListener('click', function (evt) {
+        masterToggleButton.blur()
+        showDfl = !showDfl
+        toggleMasterButton()
+        // removeDflElements()
+        // removeDflStles()
+    });
+    let mainNavSearch = document.getElementById('global-nav-search')
+    mainNavSearch.insertAdjacentElement('afterend', masterToggleButton)
+}
+
+function toggleMasterButton() {
+    console.log('master button toggled')
+    masterToggleButton.innerHTML = showDfl ? 'Turn DFL off' : 'Turn DFL on'
+    if (showDfl) {
+        mainStylesheetElement.removeAttribute('disabled')
+        jobsStylesheetElement.removeAttribute('disabled')
+        newsfeedStylesheetElement.removeAttribute('disabled')
+        networkStylesheetElement.removeAttribute('disabled')
+        // add buttons back
+    } else {
+        mainStylesheetElement.setAttribute('disabled', true)
+        jobsStylesheetElement.setAttribute('disabled', true)
+        newsfeedStylesheetElement.setAttribute('disabled', true)
+        networkStylesheetElement.setAttribute('disabled', true)
+        // remove buttons back
+    }
+}
+
+const checkForNav = setInterval(function () {
+    if (
+        document.getElementById('global-nav-search')
+        && !document.getElementById('dfl_master-toggle-button')
+    ) {
+        addMasterToggleButton()
+        // toggleMasterButton()
     }
 }, 50);
