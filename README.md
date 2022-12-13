@@ -9,7 +9,11 @@ See a problem? Please [file any issues here](https://github.com/mthurmond/distra
 This extension is not affiliated with or produced by LinkedIn™. I've gotten a lot of value from using LinkedIn™ in the past, and hope that this extension will help you use it even more effectively. 
 
 ## Screenshots
-Coming soon.
+![Newsfeed hidden](/chrome-store/newsfeed-hidden.png)
+![Newsfeed showing](/chrome-store/newsfeed-showing.png)
+![Connections hidden](/chrome-store/connections-hidden.png)
+![Connections showing](/chrome-store/connections-showing.png)
+![Jobs showing](/chrome-store/jobs-showing.png)
 
 # All the extensions I've created
 They're all free, open source, and designed to help you get in the flow.
