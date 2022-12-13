@@ -1,9 +1,10 @@
 // declare stylesheet variable globally so it can be referenced in show/hide function
 
+let mainStylesheetElement
+let switchStylesheetElement
 let newsfeedStylesheetElement
 let networkStylesheetElement
 let jobsStylesheetElement
-let mainStylesheetElement
 
 const checkForHead = setInterval(function () {
 
@@ -17,6 +18,13 @@ const checkForHead = setInterval(function () {
         mainStylesheetElement.setAttribute('id', "dfl__main-stylesheet");
         mainStylesheetElement.setAttribute('href', mainStylesheetUrl);
         document.head.appendChild(mainStylesheetElement);
+
+        const switchStylesheetUrl = chrome.runtime.getURL('hider/hider-switch.css');
+        switchStylesheetElement = document.createElement('link');
+        switchStylesheetElement.rel = 'stylesheet';
+        switchStylesheetElement.setAttribute('id', "dfl__switch-stylesheet");
+        switchStylesheetElement.setAttribute('href', switchStylesheetUrl);
+        document.head.appendChild(switchStylesheetElement);
 
         const newsfeedStylesheetUrl = chrome.runtime.getURL('hider/hider-newsfeed.css');
         newsfeedStylesheetElement = document.createElement('link');
@@ -136,6 +144,7 @@ const checkForNewsfeed = setInterval(function () {
         document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0]
         && !document.getElementById('dfl_newsfeed-toggle-button')
         && !document.querySelector('div.org-admin') //set to false if on company admin page
+        && showDfl //user wants to DFL on, and therefore wants to see this button
     ) {
         addNewsfeedToggleButton();
     }
@@ -184,6 +193,7 @@ const checkForNetwork = setInterval(function () {
     if (
         document.getElementsByClassName('mn-invitations-preview')[0]
         && !document.getElementById('dfl_network-toggle-button')
+        && showDfl //user wants to DFL on, and therefore wants to see this button
     ) {
         addNetworkToggleButton();
     }
@@ -193,6 +203,7 @@ const checkForNetwork = setInterval(function () {
         document.getElementById('dfl_network-toggle-button')
         && (document.getElementById('dfl_network-toggle-button').style.visibility == 'hidden')
         && document.querySelector('.artdeco-card.mb4.overflow-hidden:first-of-type')
+        && showDfl //user wants to DFL on, and therefore wants to see this button
     ) {
         document.getElementById('dfl_network-toggle-button').style.visibility = 'visible';
     }
@@ -245,56 +256,97 @@ const checkForJobs = setInterval(function () {
     if (
         document.getElementsByClassName('jobs-home-recent-searches')[0]
         && !document.getElementById('dfl_jobs-toggle-button')
+        && showDfl //user wants to DFL on, and therefore wants to see this button
     ) {
         addJobsToggleButton();
         toggleResultsButton()
     }
 }, 50);
 
-let masterToggleButton
+let masterSwitch
 let showDfl = true
 
-function addMasterToggleButton() {
-    console.log('master button added')
-    masterToggleButton = document.createElement('button')
-    masterToggleButton.id = 'dfl_master-toggle-button'
-    masterToggleButton.classList.add('artdeco-button', 'mb2')
-    masterToggleButton.innerHTML = showDfl ? 'Turn DFL off' : 'Turn DFL on'
-    masterToggleButton.addEventListener('click', function (evt) {
-        masterToggleButton.blur()
-        showDfl = !showDfl
-        toggleMasterButton()
-        // removeDflElements()
-        // removeDflStles()
-    });
-    let mainNavSearch = document.getElementById('global-nav-search')
-    mainNavSearch.insertAdjacentElement('afterend', masterToggleButton)
-}
+function toggleMasterSwitch() {
+    console.log('master switch toggled')
 
-function toggleMasterButton() {
-    console.log('master button toggled')
-    masterToggleButton.innerHTML = showDfl ? 'Turn DFL off' : 'Turn DFL on'
+    document.getElementById('dfl_master-switch-label').textContent = showDfl ? 'DFL on' : 'DFL off'
+    
     if (showDfl) {
+        // enable stylesheets
         mainStylesheetElement.removeAttribute('disabled')
-        jobsStylesheetElement.removeAttribute('disabled')
         newsfeedStylesheetElement.removeAttribute('disabled')
         networkStylesheetElement.removeAttribute('disabled')
+        jobsStylesheetElement.removeAttribute('disabled')
         // add buttons back
+        if (newsfeedToggleButton) {
+            newsfeedToggleButton.style.display = "block";
+        }
+        if (networkToggleButton) {
+            networkToggleButton.style.display = "block";
+        }
+        if (jobsToggleButton) {
+            jobsToggleButton.style.display = "block";
+        }
     } else {
+        // disable stylesheets
         mainStylesheetElement.setAttribute('disabled', true)
-        jobsStylesheetElement.setAttribute('disabled', true)
         newsfeedStylesheetElement.setAttribute('disabled', true)
         networkStylesheetElement.setAttribute('disabled', true)
-        // remove buttons back
+        jobsStylesheetElement.setAttribute('disabled', true)
+        // remove buttons
+        if (newsfeedToggleButton) {
+            newsfeedToggleButton.style.display = "none";
+        }
+        if (networkToggleButton) {
+            networkToggleButton.style.display = "none";
+        }
+        if (jobsToggleButton) {
+            jobsToggleButton.style.display = "none";
+        }
+        // set flags to false since these elements are being hidden; this ensures correct settings when the user turns DFL back on
+        showNewsfeed = false
+        showNetwork = false
+        showJobs = false
     }
 }
+
+function addMasterToggleSwitch() {
+    console.log('master switch added')
+
+    masterSwitch = document.createElement('div')
+    masterSwitch.id = 'dfl_master-switch'
+    masterSwitch.classList.add('artdeco-toggle', 'artdeco-toggle--toggled')
+    
+    const input = document.createElement('input')
+    input.classList.add('artdeco-toggle__button', 'input')
+    input.id = 'dfl_master-switch-input'
+
+    const label = document.createElement('label')
+    label.classList.add('artdeco-toggle__text')
+    label.id = 'dfl_master-switch-label'
+    label.textContent = showDfl ? 'DFL on' : 'DFL off'
+    
+    masterSwitch.appendChild(input)
+    masterSwitch.appendChild(label)
+
+    // add click event listener to div
+    masterSwitch.addEventListener('click', function (evt) {
+        console.log('switch clicked')
+        masterSwitch.classList.toggle('artdeco-toggle--toggled')
+        showDfl = !showDfl
+        toggleMasterSwitch()
+    })
+    
+    const mainNavSearch = document.getElementById('global-nav-search')
+    mainNavSearch.insertAdjacentElement('afterend', masterSwitch)
+}
+
 
 const checkForNav = setInterval(function () {
     if (
         document.getElementById('global-nav-search')
-        && !document.getElementById('dfl_master-toggle-button')
+        && !document.getElementById('dfl_master-switch')
     ) {
-        addMasterToggleButton()
-        // toggleMasterButton()
+        addMasterToggleSwitch()
     }
 }, 50);
