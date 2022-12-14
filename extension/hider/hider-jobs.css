@@ -1,3 +1,8 @@
+/* hide suggested & recent job searches */
+main > section.jobs-home-recent-searches {
+    visibility: hidden;
+}
+
 /* hide job recs */
 main#main.scaffold-layout__main > div.scaffold-finite-scroll.scaffold-finite-scroll--infinite {
     visibility: hidden;
