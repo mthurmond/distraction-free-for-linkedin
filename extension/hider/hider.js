@@ -311,27 +311,24 @@ function toggleMasterSwitch() {
 }
 
 function addMasterToggleSwitch() {
-    console.log('master switch added')
-
     masterSwitch = document.createElement('div')
     masterSwitch.id = 'dfl_master-switch'
     masterSwitch.classList.add('artdeco-toggle', 'artdeco-toggle--toggled')
     
-    const input = document.createElement('input')
-    input.classList.add('artdeco-toggle__button', 'input')
-    input.id = 'dfl_master-switch-input'
+    const switchInput = document.createElement('input')
+    switchInput.classList.add('artdeco-toggle__button', 'input')
+    switchInput.id = 'dfl_master-switch-input'
 
-    const label = document.createElement('label')
-    label.classList.add('artdeco-toggle__text')
-    label.id = 'dfl_master-switch-label'
-    label.textContent = showDfl ? 'DFL on' : 'DFL off'
+    const switchLabel = document.createElement('label')
+    switchLabel.classList.add('artdeco-toggle__text')
+    switchLabel.id = 'dfl_master-switch-label'
+    switchLabel.textContent = showDfl ? 'DFL on' : 'DFL off'
     
-    masterSwitch.appendChild(input)
-    masterSwitch.appendChild(label)
+    masterSwitch.appendChild(switchInput)
+    masterSwitch.appendChild(switchLabel)
 
     // add click event listener to div
     masterSwitch.addEventListener('click', function (evt) {
-        console.log('switch clicked')
         masterSwitch.classList.toggle('artdeco-toggle--toggled')
         showDfl = !showDfl
         toggleMasterSwitch()
@@ -340,7 +337,6 @@ function addMasterToggleSwitch() {
     const mainNavSearch = document.getElementById('global-nav-search')
     mainNavSearch.insertAdjacentElement('afterend', masterSwitch)
 }
-
 
 const checkForNav = setInterval(function () {
     if (
