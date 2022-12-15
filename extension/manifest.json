@@ -1,6 +1,6 @@
 {
     "name": "Distraction free for Linkedin™",
-    "version": "2.4",
+    "version": "2.5",
     "description": "Hide distractions on Linkedin™ when you need to focus.",
     "manifest_version": 3,
 
@@ -26,7 +26,7 @@
     }],
 
     "web_accessible_resources": [{
-        "resources": ["hider/hider-main.css", "hider/hider-newsfeed.css", "hider/hider-network.css", "hider/hider-jobs.css",  "hider/favicon-no-messages.ico"], 
+        "resources": ["hider/hider-main.css", "hider/hider-switch.css", "hider/hider-newsfeed.css", "hider/hider-network.css", "hider/hider-jobs.css",  "hider/favicon-no-messages.ico"], 
         "matches": ["https://www.linkedin.com/*"]
     }]
 }

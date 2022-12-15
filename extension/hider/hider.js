@@ -1,5 +1,7 @@
 // declare stylesheet variable globally so it can be referenced in show/hide function
 
+let mainStylesheetElement
+let switchStylesheetElement
 let newsfeedStylesheetElement
 let networkStylesheetElement
 let jobsStylesheetElement
@@ -11,11 +13,18 @@ const checkForHead = setInterval(function () {
         clearInterval(checkForHead);
 
         const mainStylesheetUrl = chrome.runtime.getURL('hider/hider-main.css');
-        const mainStylesheetElement = document.createElement('link');
+        mainStylesheetElement = document.createElement('link');
         mainStylesheetElement.rel = 'stylesheet';
         mainStylesheetElement.setAttribute('id', "dfl__main-stylesheet");
         mainStylesheetElement.setAttribute('href', mainStylesheetUrl);
         document.head.appendChild(mainStylesheetElement);
+
+        const switchStylesheetUrl = chrome.runtime.getURL('hider/hider-switch.css');
+        switchStylesheetElement = document.createElement('link');
+        switchStylesheetElement.rel = 'stylesheet';
+        switchStylesheetElement.setAttribute('id', "dfl__switch-stylesheet");
+        switchStylesheetElement.setAttribute('href', switchStylesheetUrl);
+        document.head.appendChild(switchStylesheetElement);
 
         const newsfeedStylesheetUrl = chrome.runtime.getURL('hider/hider-newsfeed.css');
         newsfeedStylesheetElement = document.createElement('link');
@@ -67,25 +76,29 @@ const checkForTitle = setInterval(function () {
 
 }, 100);
 
-//always show no messages favicon
+//store no messages favicon in variable
 const noMessageFavicon = chrome.runtime.getURL('/hider/favicon-no-messages.ico');
 
+// once favicon loads, swap it out for the no message favicon and activate the mutation observer to ensure favicon stays "no message" version
 const checkForFavicon = setInterval(function () {
 
-    if (document.querySelector('link[rel*="icon"]').href) {
+    // check if favicon exists
+    if (document.querySelector('link[rel*="icon"]')) {
 
+        // stock checking for the favicon to load
         clearInterval(checkForFavicon);
-
+        // swap out favicon for no message favicon
+        // note: multiple 'icon' elements matched this query; works ok now since browser using first one, but in future may need to be more specific
         document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
 
-        //activate the mutation observer
+        //activate the mutation observer to continually swap out favicon for no message favicon when needed
         faviconObserver = new MutationObserver(function (mutations) {
             if (document.querySelector('link[rel*="icon"]').href != noMessageFavicon) {
                 document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
             }
         });
 
-        //set mutation observer that swaps the "no message" favicon back in if it's ever changed while messages are hidden. 
+        //set mutation observer
         faviconObserver.observe(
             document.querySelector('link[rel*="icon"]'),
             { characterData: true, attributes: true }
@@ -132,9 +145,14 @@ function addNewsfeedToggleButton() {
 const checkForNewsfeed = setInterval(function () {
 
     if (
+        // newsfeed elements exist
         document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0]
+        // button not already added
         && !document.getElementById('dfl_newsfeed-toggle-button')
-        && !document.querySelector('div.org-admin') //set to false if on company admin page
+        // not on company admin page
+        && !document.querySelector('div.org-admin')
+        // extension is on
+        && showDfl
     ) {
         addNewsfeedToggleButton();
     }
@@ -183,6 +201,7 @@ const checkForNetwork = setInterval(function () {
     if (
         document.getElementsByClassName('mn-invitations-preview')[0]
         && !document.getElementById('dfl_network-toggle-button')
+        && showDfl //user wants to DFL on, and therefore wants to see this button
     ) {
         addNetworkToggleButton();
     }
@@ -192,6 +211,7 @@ const checkForNetwork = setInterval(function () {
         document.getElementById('dfl_network-toggle-button')
         && (document.getElementById('dfl_network-toggle-button').style.visibility == 'hidden')
         && document.querySelector('.artdeco-card.mb4.overflow-hidden:first-of-type')
+        && showDfl //user wants to DFL on, and therefore wants to see this button
     ) {
         document.getElementById('dfl_network-toggle-button').style.visibility = 'visible';
     }
@@ -244,10 +264,90 @@ function addJobsToggleButton() {
 
 const checkForJobs = setInterval(function () {
     if (
-        document.getElementsByClassName('jobs-home-recent-searches')[0]
+        // on main jobs page
+        document.querySelector('nav.jobs-home-scalable-nav')
+        // center element loaded
+        && document.querySelector('main#main')
+        // button not loaded
         && !document.getElementById('dfl_jobs-toggle-button')
+        // master switch on
+        && showDfl 
     ) {
         addJobsToggleButton();
         toggleResultsButton()
+    }
+}, 50);
+
+let masterSwitch
+let showDfl = true
+
+function toggleMasterSwitch() {
+    masterSwitch.classList.toggle('artdeco-toggle--toggled')
+    document.getElementById('dfl_master-switch-label').textContent = showDfl ? 'DFL on' : 'DFL off'
+    
+    if (showDfl) {
+        // enable stylesheets
+        mainStylesheetElement.removeAttribute('disabled')
+        newsfeedStylesheetElement.removeAttribute('disabled')
+        networkStylesheetElement.removeAttribute('disabled')
+        jobsStylesheetElement.removeAttribute('disabled')
+    } else {
+        // disable stylesheets
+        mainStylesheetElement.setAttribute('disabled', true)
+        newsfeedStylesheetElement.setAttribute('disabled', true)
+        networkStylesheetElement.setAttribute('disabled', true)
+        jobsStylesheetElement.setAttribute('disabled', true)
+        // set flags to false; ensures correct settings when the user turns the master switch back on
+        showNewsfeed = false
+        showNetwork = false
+        showJobs = false
+        // remove dfl button from user's current page, if applicable
+        if (newsfeedToggleButton) {
+            newsfeedToggleButton.remove()
+        }
+        if (networkToggleButton) {
+            networkToggleButton.remove()
+        }
+        if (jobsToggleButton) {
+            jobsToggleButton.remove()
+            // unhide the 'show more job results' button(s)
+            toggleResultsButton()
+        }
+    }
+}
+
+function addMasterSwitch() {
+    masterSwitch = document.createElement('div')
+    masterSwitch.id = 'dfl_master-switch'
+    masterSwitch.classList.add('artdeco-toggle', 'artdeco-toggle--toggled')
+    
+    const switchInput = document.createElement('input')
+    switchInput.classList.add('artdeco-toggle__button', 'input')
+    switchInput.id = 'dfl_master-switch-input'
+
+    const switchLabel = document.createElement('label')
+    switchLabel.classList.add('artdeco-toggle__text')
+    switchLabel.id = 'dfl_master-switch-label'
+    switchLabel.textContent = showDfl ? 'DFL on' : 'DFL off'
+    
+    masterSwitch.appendChild(switchInput)
+    masterSwitch.appendChild(switchLabel)
+
+    // add click event listener to div
+    masterSwitch.addEventListener('click', function (evt) {
+        showDfl = !showDfl
+        toggleMasterSwitch()
+    })
+    
+    const mainNavSearch = document.getElementById('global-nav-search')
+    mainNavSearch.insertAdjacentElement('afterend', masterSwitch)
+}
+
+const checkForNav = setInterval(function () {
+    if (
+        document.getElementById('global-nav-search')
+        && !document.getElementById('dfl_master-switch')
+    ) {
+        addMasterSwitch()
     }
 }, 50);
