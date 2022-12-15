@@ -9,13 +9,17 @@ See a problem? Please [file any issues here](https://github.com/mthurmond/distra
 This extension is not affiliated with or produced by LinkedIn™. I've gotten a lot of value from using LinkedIn™ in the past, and hope that this extension will help you use it even more effectively. 
 
 ## Screenshots
-Coming soon.
+![Newsfeed hidden](/chrome-store/newsfeed-hidden.png)
+![Newsfeed showing](/chrome-store/newsfeed-showing.png)
+![Connections hidden](/chrome-store/connections-hidden.png)
+![Connections showing](/chrome-store/connections-showing.png)
+![Jobs showing](/chrome-store/jobs-showing.png)
 
 # All the extensions I've created
 They're all free, open source, and designed to help you get in the flow.
 
 1. [Distraction free for LinkedIn™](https://github.com/mthurmond/distraction-free-for-linkedin): Remove distractions from your LinkedIn™ experience.
-2. [Inbox hider for Gmail™](https://github.com/mthurmond/inbox-hider-for-gmail): Hide your Gmail™ inbox whenever you want.
+2. [Hide My Email for Gmail™](https://github.com/mthurmond/hide-my-email-for-gmail): Hide your Gmail™ emails whenever you want.
 3. [Slack hider](https://github.com/mthurmond/slack-hider): Hide your Slack™ messages whenever you want.
 
 # Other extensions I recommend

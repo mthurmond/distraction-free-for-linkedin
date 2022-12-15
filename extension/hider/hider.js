@@ -248,8 +248,10 @@ function addJobsToggleButton() {
         toggleJobs();
         toggleResultsButton()
     });
-    let mainJobsBox = document.getElementsByClassName('jobs-home-recent-searches')[0];
-    mainJobsBox.insertAdjacentElement('afterend', jobsToggleButton);
+    
+    // get main center element; appears on multiple pages but this function only runs on jobs page
+    let mainCenterElement = document.querySelector('main#main');
+    mainCenterElement.prepend(jobsToggleButton);
 }
 
 const checkForJobs = setInterval(function () {
