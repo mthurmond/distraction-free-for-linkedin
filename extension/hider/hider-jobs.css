@@ -3,8 +3,12 @@ main > section.jobs-home-recent-searches {
     visibility: hidden;
 }
 
-/* hide job recs */
+/* hide job recs on larger viewports */
 main#main.scaffold-layout__main > div.scaffold-finite-scroll.scaffold-finite-scroll--infinite {
+    visibility: hidden;
+}
+/* hide job recs on smaller viewports, where the class changes to "...finite" */
+main#main.scaffold-layout__main > div.scaffold-finite-scroll.scaffold-finite-scroll--finite {
     visibility: hidden;
 }
 
