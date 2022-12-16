@@ -297,10 +297,6 @@ function toggleMasterSwitch() {
         newsfeedStylesheetElement.setAttribute('disabled', true)
         networkStylesheetElement.setAttribute('disabled', true)
         jobsStylesheetElement.setAttribute('disabled', true)
-        // set flags to false; ensures correct settings when the user turns the master switch back on
-        showNewsfeed = false
-        showNetwork = false
-        showJobs = false
         // remove dfl button from user's current page, if applicable
         if (newsfeedToggleButton) {
             newsfeedToggleButton.remove()
@@ -311,8 +307,13 @@ function toggleMasterSwitch() {
         if (jobsToggleButton) {
             jobsToggleButton.remove()
             // unhide the 'show more job results' button(s)
+            showJobs = true
             toggleResultsButton()
         }
+        // set flags to false; ensures correct settings when the user turns the master switch back on
+        showNewsfeed = false
+        showNetwork = false
+        showJobs = false
     }
 }
 
