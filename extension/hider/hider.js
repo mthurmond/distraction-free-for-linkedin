@@ -149,6 +149,8 @@ const checkForNewsfeed = setInterval(function () {
         document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0]
         // button not already added
         && !document.getElementById('dfl_newsfeed-toggle-button')
+        // not on group page
+        && !document.querySelector('div#groups')
         // not on company admin page
         && !document.querySelector('div.org-admin')
         // extension is on
@@ -197,22 +199,28 @@ function addNetworkToggleButton() {
 
 const checkForNetwork = setInterval(function () {
 
-    // if top element in section appears and button not loaded, load button
     if (
+        // top element in section appears
         document.getElementsByClassName('mn-invitations-preview')[0]
+        // button not yet loaded
         && !document.getElementById('dfl_network-toggle-button')
-        && showDfl //user wants to DFL on, and therefore wants to see this button
+        // master toggle is on
+        && showDfl
     ) {
         addNetworkToggleButton();
     }
 
-    // if button is loaded and hidden, and suggestions element is loaded, make button visible
     if (
+        // button is loaded
         document.getElementById('dfl_network-toggle-button')
+        // button is hidden
         && (document.getElementById('dfl_network-toggle-button').style.visibility == 'hidden')
+        // suggestions element is loaded
         && document.querySelector('.artdeco-card.mb4.overflow-hidden:first-of-type')
-        && showDfl //user wants to DFL on, and therefore wants to see this button
+        // master toggle is on
+        && showDfl
     ) {
+        // make button visible
         document.getElementById('dfl_network-toggle-button').style.visibility = 'visible';
     }
 
