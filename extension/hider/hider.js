@@ -322,6 +322,13 @@ function toggleMasterSwitch() {
         }
         if (networkToggleButton) {
             networkToggleButton.remove()
+            
+            // unhide the celebrations section
+            const celebrationsLink = document.querySelector('a[href="https://www.linkedin.com/celebrations"]')
+            if (celebrationsLink) {
+                const celebrationsSection = celebrationsLink.parentNode
+                celebrationsSection.style.visibility = 'visible'
+            } 
         }
         if (jobsToggleButton) {
             jobsToggleButton.remove()
