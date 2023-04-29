@@ -277,7 +277,7 @@ function addJobsToggleButton() {
     });
     
     // get main center element; appears on multiple pages but this function only runs on jobs page
-    let mainCenterElement = document.querySelector('main#main');
+    let mainCenterElement = document.querySelector('main.scaffold-layout__main');
     mainCenterElement.prepend(jobsToggleButton);
 }
 
@@ -286,7 +286,7 @@ const checkForJobs = setInterval(function () {
         // on main jobs page
         document.querySelector('nav.jobs-home-scalable-nav')
         // center element loaded
-        && document.querySelector('main#main')
+        && document.querySelector('main.scaffold-layout__main')
         // button not loaded
         && !document.getElementById('dfl_jobs-toggle-button')
         // master switch on
