@@ -170,16 +170,21 @@ function toggleNetwork(showNetwork) {
 
     networkToggleButton.innerHTML = showNetwork ? 'Hide suggestions' : 'Show suggestions';
     
-    // hide celebrations section
-    const celebrationsLink = document.querySelector('a[href="https://www.linkedin.com/celebrations"]')
-    const celebrationsSection = celebrationsLink.parentNode
-    
+    // show/hide celebrations section if it exists
+    const celebrationsLink = document.querySelector('a[href="https://www.linkedin.com/celebrations"]');
+    if (celebrationsLink) {
+        const celebrationsSection = celebrationsLink.parentNode;
+        if (showNetwork) {
+            celebrationsSection.style.visibility = 'visible';
+        } else {
+            celebrationsSection.style.visibility = 'hidden';
+        }
+    }
+
     if (showNetwork) {
         networkStylesheetElement.setAttribute('disabled', true);
-        celebrationsSection.style.visibility = 'visible'
     } else {
         networkStylesheetElement.removeAttribute('disabled');
-        celebrationsSection.style.visibility = 'hidden'
     }
 }
 
@@ -203,7 +208,6 @@ function addNetworkToggleButton() {
 }
 
 const checkForNetwork = setInterval(function () {
-
     if (
         // top element in section appears
         document.getElementsByClassName('mn-invitations-preview')[0]
@@ -213,14 +217,15 @@ const checkForNetwork = setInterval(function () {
         && showDfl
     ) {
         addNetworkToggleButton();
-        // hide celebrations section only if network is hidden
+        // hide celebrations section if network is hidden and celebration section exists
         if (!showNetwork) {
             const celebrationsLink = document.querySelector('a[href="https://www.linkedin.com/celebrations"]')
-            const celebrationsSection = celebrationsLink.parentNode
-            celebrationsSection.style.visibility = 'hidden'
+            if (celebrationsLink) {
+                const celebrationsSection = celebrationsLink.parentNode
+                celebrationsSection.style.visibility = 'hidden'
+            }
         }
     }
-
     if (
         // button is loaded
         document.getElementById('dfl_network-toggle-button')
