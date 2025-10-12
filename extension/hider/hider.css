@@ -104,20 +104,6 @@ div[data-launchpad-scroll-anchor="pymk"] {
   visibility: hidden;
 }
 
-/* Hide "People you may know" section  */
-@supports selector(:has(*)) {
-  section:has(> div h3 + button[aria-label^="Show all suggestions for People you may know"]) {
-    display: none !important;
-  }
-}
-
-/* Fallback: hide cohort cards & actions broadly if :has is unavailable */
-main [role="list"] [data-view-name="cohort-card"],
-main [role="list"] [data-view-name="cohort-card-dismiss"],
-main [role="list"] [data-view-name="edge-creation-connect-action"] {
-  display: none !important;
-}
-
 /* ---------- Jobs ---------- */
 
 /* Hide suggested & recent job searches */

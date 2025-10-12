@@ -1,0 +1,34 @@
+/* ---------- LinkedIn Games promos ---------- */
+
+@supports selector(:has(*)) {
+  /* Restrict to main column for safety */
+  main.scaffold-layout__main section:has(a[href="/games/zip/"]) { display: none !important; }
+  main.scaffold-layout__main section:has(.video-js):has(a[href^="/games/"]) { display: none !important; }
+
+  /* More restrictive direct-child guards */
+  section:has(> a[href="/games/zip/"]),
+  section:has(> div > a[href="/games/zip/"]) {
+    display: none !important;
+  }
+}
+
+/* Fallback when :has is not supported: make the cards inert by removing the link */
+a[href="/games/zip/"],
+a[href^="/games/"] {
+  display: none !important;
+}
+
+
+/* Hide "People you may know" section  */
+@supports selector(:has(*)) {
+  section:has(> div h3 + button[aria-label^="Show all suggestions for People you may know"]) {
+    display: none !important;
+  }
+}
+
+/* Fallback: hide cohort cards & actions broadly if :has is unavailable */
+main [role="list"] [data-view-name="cohort-card"],
+main [role="list"] [data-view-name="cohort-card-dismiss"],
+main [role="list"] [data-view-name="edge-creation-connect-action"] {
+  display: none !important;
+}
