@@ -1,385 +1,354 @@
-// declare stylesheet variable globally so it can be referenced in show/hide function
-
-let mainStylesheetElement
-let switchStylesheetElement
-let newsfeedStylesheetElement
-let networkStylesheetElement
-let jobsStylesheetElement
-
-const checkForHead = setInterval(function () {
-
-    if (document.head) {
-
-        clearInterval(checkForHead);
-
-        const mainStylesheetUrl = chrome.runtime.getURL('hider/hider-main.css');
-        mainStylesheetElement = document.createElement('link');
-        mainStylesheetElement.rel = 'stylesheet';
-        mainStylesheetElement.setAttribute('id', "dfl__main-stylesheet");
-        mainStylesheetElement.setAttribute('href', mainStylesheetUrl);
-        document.head.appendChild(mainStylesheetElement);
-
-        const switchStylesheetUrl = chrome.runtime.getURL('hider/hider-switch.css');
-        switchStylesheetElement = document.createElement('link');
-        switchStylesheetElement.rel = 'stylesheet';
-        switchStylesheetElement.setAttribute('id', "dfl__switch-stylesheet");
-        switchStylesheetElement.setAttribute('href', switchStylesheetUrl);
-        document.head.appendChild(switchStylesheetElement);
-
-        const newsfeedStylesheetUrl = chrome.runtime.getURL('hider/hider-newsfeed.css');
-        newsfeedStylesheetElement = document.createElement('link');
-        newsfeedStylesheetElement.rel = 'stylesheet';
-        newsfeedStylesheetElement.setAttribute('id', "dfl__newsfeed-stylesheet");
-        newsfeedStylesheetElement.setAttribute('href', newsfeedStylesheetUrl);
-        document.head.appendChild(newsfeedStylesheetElement);
-
-        const networkStylesheetUrl = chrome.runtime.getURL('hider/hider-network.css');
-        networkStylesheetElement = document.createElement('link');
-        networkStylesheetElement.rel = 'stylesheet';
-        networkStylesheetElement.setAttribute('id', "dfl__network-stylesheet");
-        networkStylesheetElement.setAttribute('href', networkStylesheetUrl);
-        document.head.appendChild(networkStylesheetElement);
-
-        const jobsStylesheetUrl = chrome.runtime.getURL('hider/hider-jobs.css');
-        jobsStylesheetElement = document.createElement('link');
-        jobsStylesheetElement.rel = 'stylesheet';
-        jobsStylesheetElement.setAttribute('id', "dfl__jobs-stylesheet");
-        jobsStylesheetElement.setAttribute('href', jobsStylesheetUrl);
-        document.head.appendChild(jobsStylesheetElement);
-
-    }
-
+// Add stylesheet to top frame
+const checkForTopHead = setInterval(() => {
+  if (document.head && !document.getElementById('dfl__main-stylesheet-top')) {
+    const mainStylesheetUrl = chrome.runtime.getURL('hider/hider.css');
+    const mainStylesheetElement = document.createElement('link');
+    mainStylesheetElement.rel = 'stylesheet';
+    mainStylesheetElement.id = 'dfl__main-stylesheet-top';
+    mainStylesheetElement.href = mainStylesheetUrl;
+    document.head.appendChild(mainStylesheetElement);
+  }
 }, 100);
 
-//remove message count from title
-const checkForTitle = setInterval(function () {
+// Add stylesheet to preload frame
+const checkForPreload = setInterval(() => {
+  const preloadIframe = [...document.querySelectorAll('iframe')].find(f => f.src.includes('/preload/'));
+  const preloadDoc = preloadIframe?.contentDocument;
+  
+  if (preloadDoc && !preloadDoc.getElementById('dfl__main-stylesheet-preload')) {
+    const mainStylesheetUrl = chrome.runtime.getURL('hider/hider.css');
+    const mainStylesheetElement = document.createElement('link');
+    mainStylesheetElement.rel = 'stylesheet';
+    mainStylesheetElement.id = 'dfl__main-stylesheet-preload';
+    mainStylesheetElement.href = mainStylesheetUrl;
+    preloadDoc.head.appendChild(mainStylesheetElement);
+  }
+}, 100);
 
-    if (document.title) {
-
-        clearInterval(checkForTitle);
-
+// Remove message count from title
+const checkForTitle = setInterval(() => {
+  if (document.title) {
+    clearInterval(checkForTitle);
+    document.title = 'LinkedIn';
+    
+    const titleObserver = new MutationObserver(() => {
+      if (document.title !== 'LinkedIn') {
         document.title = 'LinkedIn';
-
-        //activate the mutation observer
-        titleObserver = new MutationObserver(function (mutations) {
-            if (document.title != 'LinkedIn') {
-                document.title = 'LinkedIn';
-            }
-        });
-
-        titleObserver.observe(
-            document.querySelector('title'),
-            { characterData: true, childList: true }
-        );
-
-    }
-
+      }
+    });
+    
+    titleObserver.observe(document.querySelector('title'), {
+      characterData: true,
+      childList: true
+    });
+  }
 }, 100);
 
-//store no messages favicon in variable
+// Swap favicon for no-message version
 const noMessageFavicon = chrome.runtime.getURL('/hider/favicon-no-messages.ico');
 
-// once favicon loads, swap it out for the no message favicon and activate the mutation observer to ensure favicon stays "no message" version
-const checkForFavicon = setInterval(function () {
-
-    // check if favicon exists
-    if (document.querySelector('link[rel*="icon"]')) {
-
-        // stock checking for the favicon to load
-        clearInterval(checkForFavicon);
-        // swap out favicon for no message favicon
-        // note: multiple 'icon' elements matched this query; works ok now since browser using first one, but in future may need to be more specific
-        document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
-
-        //activate the mutation observer to continually swap out favicon for no message favicon when needed
-        faviconObserver = new MutationObserver(function (mutations) {
-            if (document.querySelector('link[rel*="icon"]').href != noMessageFavicon) {
-                document.querySelector('link[rel*="icon"]').href = noMessageFavicon;
-            }
-        });
-
-        //set mutation observer
-        faviconObserver.observe(
-            document.querySelector('link[rel*="icon"]'),
-            { characterData: true, attributes: true }
-        );
-
-    }
-
+const checkForFavicon = setInterval(() => {
+  const favicon = document.querySelector('link[rel*="icon"]');
+  
+  if (favicon) {
+    clearInterval(checkForFavicon);
+    favicon.href = noMessageFavicon;
+    
+    const faviconObserver = new MutationObserver(() => {
+      if (favicon.href !== noMessageFavicon) {
+        favicon.href = noMessageFavicon;
+      }
+    });
+    
+    faviconObserver.observe(favicon, {
+      characterData: true,
+      attributes: true
+    });
+  }
 }, 100);
 
-
-// let user toggle newsfeed
-let newsfeedToggleButton;
-let showNewsfeed = false;
-
-function toggleNewsfeed(showNewsfeed) {
-
-    newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
-
-    if (showNewsfeed) {
-        newsfeedStylesheetElement.setAttribute('disabled', true);
-    } else {
-        newsfeedStylesheetElement.removeAttribute('disabled');
-    }
-
-}
-
-function addNewsfeedToggleButton() {
-    newsfeedToggleButton = document.createElement('button');
-    newsfeedToggleButton.id = 'dfl_newsfeed-toggle-button';
-    newsfeedToggleButton.classList.add('artdeco-button', 'mb2');
-    newsfeedToggleButton.innerHTML = showNewsfeed ? 'Hide newsfeed' : 'Show newsfeed';
-    newsfeedToggleButton.addEventListener('click', function (evt) {
-        newsfeedToggleButton.blur();
-        showNewsfeed = !showNewsfeed;
-        toggleNewsfeed(showNewsfeed);
-
-    });
-
-    let mainNewsfeedBox = document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0];
-    mainNewsfeedBox.insertAdjacentElement('afterend', newsfeedToggleButton);
-
-}
-
-const checkForNewsfeed = setInterval(function () {
-
-    if (
-        // newsfeed elements exist
-        document.getElementsByClassName('share-box-feed-entry__closed-share-box')[0]
-        // button not already added
-        && !document.getElementById('dfl_newsfeed-toggle-button')
-        // not on group page
-        && !document.querySelector('div#groups')
-        // not on company admin page
-        && !document.querySelector('div.org-admin')
-        // extension is on
-        && showDfl
-    ) {
-        addNewsfeedToggleButton();
-    }
-
-}, 50);
-
-
-// let user toggle network suggestions
-let networkToggleButton;
-let showNetwork = false;
-
-function toggleNetwork(showNetwork) {
-
-    networkToggleButton.innerHTML = showNetwork ? 'Hide suggestions' : 'Show suggestions';
-    
-    // show/hide celebrations section if it exists
-    const celebrationsLink = document.querySelector('a[href="https://www.linkedin.com/celebrations"]');
-    if (celebrationsLink) {
-        const celebrationsSection = celebrationsLink.parentNode;
-        if (showNetwork) {
-            celebrationsSection.style.visibility = 'visible';
-        } else {
-            celebrationsSection.style.visibility = 'hidden';
-        }
-    }
-
-    if (showNetwork) {
-        networkStylesheetElement.setAttribute('disabled', true);
-    } else {
-        networkStylesheetElement.removeAttribute('disabled');
-    }
-}
-
-function addNetworkToggleButton() {
-    networkToggleButton = document.createElement('button');
-    networkToggleButton.id = 'dfl_network-toggle-button';
-    networkToggleButton.classList.add('artdeco-button', 'mb2');
-    networkToggleButton.innerHTML = showNetwork ? 'Hide suggestions' : 'Show suggestions';
-    // hide button by default so it appears on page before network suggestions do
-    networkToggleButton.style.visibility = 'hidden';
-    networkToggleButton.addEventListener('click', function (evt) {
-        networkToggleButton.blur();
-        showNetwork = !showNetwork;
-        toggleNetwork(showNetwork);
-
-    });
-
-    let mainNetworkBox = document.getElementsByClassName('mn-invitations-preview')[0];
-    mainNetworkBox.insertAdjacentElement('afterend', networkToggleButton);
-
-}
-
-const checkForNetwork = setInterval(function () {
-    if (
-        // top element in section appears
-        document.getElementsByClassName('mn-invitations-preview')[0]
-        // button not yet loaded
-        && !document.getElementById('dfl_network-toggle-button')
-        // master toggle is on
-        && showDfl
-    ) {
-        addNetworkToggleButton();
-        // hide celebrations section if network is hidden and celebration section exists
-        if (!showNetwork) {
-            const celebrationsLink = document.querySelector('a[href="https://www.linkedin.com/celebrations"]')
-            if (celebrationsLink) {
-                const celebrationsSection = celebrationsLink.parentNode
-                celebrationsSection.style.visibility = 'hidden'
-            }
-        }
-    }
-    if (
-        // button is loaded
-        document.getElementById('dfl_network-toggle-button')
-        // button is hidden
-        && (document.getElementById('dfl_network-toggle-button').style.visibility == 'hidden')
-        // suggestions element is loaded
-        && document.querySelector('.artdeco-card.mb4.overflow-hidden:first-of-type')
-        // master toggle is on
-        && showDfl
-    ) {
-        // make button visible
-        document.getElementById('dfl_network-toggle-button').style.visibility = 'visible';
-    }
-
-}, 50);
-
-// let user toggle job recommendations
-let jobsToggleButton;
-let showJobs = false;
-
-function toggleJobs() {
-    jobsToggleButton.innerHTML = showJobs ? 'Hide recommendations' : 'Show recommendations';
-    if (showJobs) {
-        jobsStylesheetElement.setAttribute('disabled', true);
-    } else {
-        jobsStylesheetElement.removeAttribute('disabled');
-    }
-}
-
-// toggle 'show more results' button on jobs page. should be hidden when jobs are hidden. 
-function toggleResultsButton() {
-    const jobPageSpans = document.querySelectorAll('span.artdeco-button__text')
-    // find 'show results' span then hide parent button
-    for (let i = 0; i < jobPageSpans.length; i++) {
-        if (jobPageSpans[i].textContent == '\n    Show more results\n') {
-            const showResultsButton = jobPageSpans[i].parentElement
-            const buttonVisibility = showJobs ? 'visible' : 'hidden';
-            showResultsButton.style.visibility = buttonVisibility
-            break
-        }
-    }
-}
-
-function addJobsToggleButton() {
-    jobsToggleButton = document.createElement('button');
-    jobsToggleButton.id = 'dfl_jobs-toggle-button';
-    jobsToggleButton.classList.add('artdeco-button', 'mb2');
-    jobsToggleButton.innerHTML = showJobs ? 'Hide recommendations' : 'Show recommendations';
-    jobsToggleButton.addEventListener('click', function (evt) {
-        jobsToggleButton.blur();
-        showJobs = !showJobs;
-        toggleJobs();
-        toggleResultsButton()
-    });
-    
-    // get main center element; appears on multiple pages but this function only runs on jobs page
-    let mainCenterElement = document.querySelector('main.scaffold-layout__main');
-    mainCenterElement.prepend(jobsToggleButton);
-}
-
-const checkForJobs = setInterval(function () {
-    if (
-        // on main jobs page
-        document.querySelector('nav.jobs-home-scalable-nav')
-        // center element loaded
-        && document.querySelector('main.scaffold-layout__main')
-        // button not loaded
-        && !document.getElementById('dfl_jobs-toggle-button')
-        // master switch on
-        && showDfl 
-    ) {
-        addJobsToggleButton();
-        toggleResultsButton()
-    }
-}, 50);
-
-let masterSwitch
-let showDfl = true
+// Master switch toggle
+let showDfl = true;
 
 function toggleMasterSwitch() {
-    masterSwitch.classList.toggle('artdeco-toggle--toggled')
-    document.getElementById('dfl_master-switch-label').textContent = showDfl ? 'DFL on' : 'DFL off'
-    
-    if (showDfl) {
-        // enable stylesheets
-        mainStylesheetElement.removeAttribute('disabled')
-        newsfeedStylesheetElement.removeAttribute('disabled')
-        networkStylesheetElement.removeAttribute('disabled')
-        jobsStylesheetElement.removeAttribute('disabled')
-    } else {
-        // disable stylesheets
-        mainStylesheetElement.setAttribute('disabled', true)
-        newsfeedStylesheetElement.setAttribute('disabled', true)
-        networkStylesheetElement.setAttribute('disabled', true)
-        jobsStylesheetElement.setAttribute('disabled', true)
-        // remove dfl button from user's current page, if applicable
-        if (newsfeedToggleButton) {
-            newsfeedToggleButton.remove()
-        }
-        if (networkToggleButton) {
-            networkToggleButton.remove()
-            
-            // unhide the celebrations section
-            const celebrationsLink = document.querySelector('a[href="https://www.linkedin.com/celebrations"]')
-            if (celebrationsLink) {
-                const celebrationsSection = celebrationsLink.parentNode
-                celebrationsSection.style.visibility = 'visible'
-            } 
-        }
-        if (jobsToggleButton) {
-            jobsToggleButton.remove()
-            // unhide the 'show more job results' button(s)
-            showJobs = true
-            toggleResultsButton()
-        }
-        // set flags to false; ensures correct settings when the user turns the master switch back on
-        showNewsfeed = false
-        showNetwork = false
-        showJobs = false
-    }
+  const topStylesheet = document.getElementById('dfl__main-stylesheet-top');
+  const preloadStylesheet = document.querySelector('iframe[src*="/preload/"]')?.contentDocument?.getElementById('dfl__main-stylesheet-preload');
+  
+  if (showDfl) {
+    topStylesheet?.removeAttribute('disabled');
+    preloadStylesheet?.removeAttribute('disabled');
+  } else {
+    topStylesheet?.setAttribute('disabled', true);
+    preloadStylesheet?.setAttribute('disabled', true);
+  }
 }
 
-function addMasterSwitch() {
-    masterSwitch = document.createElement('div')
-    masterSwitch.id = 'dfl_master-switch'
-    masterSwitch.classList.add('artdeco-toggle', 'artdeco-toggle--toggled')
+// Add master switch toggle
+// setInterval(() => {
+//   if (!document.getElementById('dfl-toggle-container')) {
+//     const container = document.createElement('div');
+//     container.id = 'dfl-toggle-container';
+//     container.style.position = 'fixed';
+//     container.style.top = '16px';
+//     container.style.left = '16px';
+//     container.style.zIndex = '2147483647';
+//     container.style.display = 'flex';
+//     container.style.alignItems = 'center';
+//     container.style.gap = '8px';
+//     container.style.fontFamily = '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
+//     container.style.background = '#e8f4f8';
+//     container.style.padding = '8px 12px';
+//     container.style.borderRadius = '20px';
+//     container.style.boxShadow = '0 2px 12px rgba(0, 0, 0, 0.15)';
+//     container.style.userSelect = 'none';
+//     container.style.cursor = 'grab';
     
-    const switchInput = document.createElement('input')
-    switchInput.classList.add('artdeco-toggle__button', 'input')
-    switchInput.id = 'dfl_master-switch-input'
-
-    const switchLabel = document.createElement('label')
-    switchLabel.classList.add('artdeco-toggle__text')
-    switchLabel.id = 'dfl_master-switch-label'
-    switchLabel.textContent = showDfl ? 'DFL on' : 'DFL off'
+//     const dragHandle = document.createElement('div');
+//     dragHandle.style.width = '4px';
+//     dragHandle.style.height = '16px';
+//     dragHandle.style.background = '#ddd';
+//     dragHandle.style.borderRadius = '2px';
+//     dragHandle.style.marginRight = '4px';
+//     dragHandle.style.position = 'relative';
+//     dragHandle.innerHTML = '<div style="position:absolute;top:0;left:0;width:100%;height:4px;background:#ddd;border-radius:2px;"></div><div style="position:absolute;top:6px;left:0;width:100%;height:4px;background:#ddd;border-radius:2px;"></div><div style="position:absolute;top:12px;left:0;width:100%;height:4px;background:#ddd;border-radius:2px;"></div>';
     
-    masterSwitch.appendChild(switchInput)
-    masterSwitch.appendChild(switchLabel)
-
-    // add click event listener to div
-    masterSwitch.addEventListener('click', function (evt) {
-        showDfl = !showDfl
-        toggleMasterSwitch()
-    })
+//     const label = document.createElement('span');
+//     label.id = 'dfl-label';
+//     label.textContent = 'DFL on';
+//     label.style.fontSize = '13px';
+//     label.style.fontWeight = '600';
+//     label.style.color = '#333';
+//     label.style.transition = 'color 0.3s ease';
+//     label.style.cursor = 'pointer';
     
-    const mainNavSearch = document.getElementById('global-nav-search')
-    mainNavSearch.insertAdjacentElement('afterend', masterSwitch)
-}
+//     const toggle = document.createElement('div');
+//     toggle.id = 'dfl-toggle';
+//     toggle.style.width = '44px';
+//     toggle.style.height = '24px';
+//     toggle.style.background = '#10b981';
+//     toggle.style.borderRadius = '12px';
+//     toggle.style.position = 'relative';
+//     toggle.style.cursor = 'pointer';
+//     toggle.style.transition = 'background 0.3s ease';
+//     toggle.style.flexShrink = '0';
+    
+//     const slider = document.createElement('div');
+//     slider.id = 'dfl-slider';
+//     slider.style.width = '20px';
+//     slider.style.height = '20px';
+//     slider.style.background = 'white';
+//     slider.style.borderRadius = '50%';
+//     slider.style.position = 'absolute';
+//     slider.style.top = '2px';
+//     slider.style.left = '2px';
+//     slider.style.transition = 'left 0.3s ease';
+//     slider.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)';
+    
+//     toggle.appendChild(slider);
+//     container.appendChild(dragHandle);
+//     container.appendChild(label);
+//     container.appendChild(toggle);
+    
+//     // Toggle function
+//     function toggleDfl() {
+//       showDfl = !showDfl;
+//       if (showDfl) {
+//         slider.style.left = '2px';
+//         toggle.style.background = '#10b981';
+//         label.textContent = 'DFL on';
+//       } else {
+//         slider.style.left = '22px';
+//         toggle.style.background = '#666';
+//         label.textContent = 'DFL off';
+//       }
+//       toggleMasterSwitch();
+//     }
+    
+//     // Drag functionality
+//     let isDragging = false;
+//     let hasMoved = false;
+//     let dragStartX, dragStartY, startX, startY;
+    
+//     container.onmousedown = function(e) {
+//       // Don't start drag if clicking on toggle or label
+//       if (e.target === toggle || e.target === slider || e.target === label) {
+//         return;
+//       }
+//       isDragging = true;
+//       hasMoved = false;
+//       container.style.cursor = 'grabbing';
+//       dragStartX = e.clientX;
+//       dragStartY = e.clientY;
+//       startX = container.offsetLeft;
+//       startY = container.offsetTop;
+//       e.preventDefault();
+//     };
+    
+//     document.onmousemove = function(e) {
+//       if (isDragging) {
+//         const deltaX = e.clientX - dragStartX;
+//         const deltaY = e.clientY - dragStartY;
+//         if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+//           hasMoved = true;
+//         }
+//         container.style.left = startX + deltaX + 'px';
+//         container.style.top = startY + deltaY + 'px';
+//       }
+//     };
+    
+//     document.onmouseup = function() {
+//       if (isDragging) {
+//         isDragging = false;
+//         container.style.cursor = 'grab';
+//       }
+//     };
+    
+//     // Toggle clicks
+//     toggle.onclick = toggleDfl;
+//     label.onclick = toggleDfl;
+    
+//     document.body.appendChild(container);
+//   }
+// }, 100);
 
-const checkForNav = setInterval(function () {
-    if (
-        document.getElementById('global-nav-search')
-        && !document.getElementById('dfl_master-switch')
-    ) {
-        addMasterSwitch()
+
+// Add master switch toggle
+setInterval(() => {
+  if (!document.getElementById('dfl-toggle-container')) {
+    const container = document.createElement('div');
+    container.id = 'dfl-toggle-container';
+    container.style.position = 'fixed';
+    container.style.top = '16px';
+    container.style.left = '16px';
+    container.style.zIndex = '2147483647';
+    container.style.display = 'flex';
+    container.style.alignItems = 'center';
+    container.style.gap = '8px';
+    container.style.fontFamily = '-apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif';
+    container.style.background = '#e8f4f8';
+    container.style.padding = '8px 12px';
+    container.style.borderRadius = '20px';
+    container.style.boxShadow = '0 2px 12px rgba(0, 0, 0, 0.15)';
+    container.style.userSelect = 'none';
+    container.style.cursor = 'grab';
+    
+    const dragHandle = document.createElement('div');
+    dragHandle.style.width = '4px';
+    dragHandle.style.height = '16px';
+    dragHandle.style.background = '#ddd';
+    dragHandle.style.borderRadius = '2px';
+    dragHandle.style.marginRight = '4px';
+    dragHandle.style.position = 'relative';
+    dragHandle.innerHTML = '<div style="position:absolute;top:0;left:0;width:100%;height:4px;background:#ddd;border-radius:2px;"></div><div style="position:absolute;top:6px;left:0;width:100%;height:4px;background:#ddd;border-radius:2px;"></div><div style="position:absolute;top:12px;left:0;width:100%;height:4px;background:#ddd;border-radius:2px;"></div>';
+    
+    const label = document.createElement('span');
+    label.id = 'dfl-label';
+    label.textContent = 'DFL on';
+    label.style.fontSize = '13px';
+    label.style.fontWeight = '600';
+    label.style.color = '#333';
+    label.style.transition = 'color 0.3s ease';
+    label.style.cursor = 'pointer';
+    
+    const toggle = document.createElement('div');
+    toggle.id = 'dfl-toggle';
+    toggle.style.width = '44px';
+    toggle.style.height = '24px';
+    toggle.style.background = '#10b981';
+    toggle.style.borderRadius = '12px';
+    toggle.style.position = 'relative';
+    toggle.style.cursor = 'pointer';
+    toggle.style.transition = 'background 0.3s ease';
+    toggle.style.flexShrink = '0';
+    
+    const slider = document.createElement('div');
+    slider.id = 'dfl-slider';
+    slider.style.width = '20px';
+    slider.style.height = '20px';
+    slider.style.background = 'white';
+    slider.style.borderRadius = '50%';
+    slider.style.position = 'absolute';
+    slider.style.top = '2px';
+    slider.style.left = '2px';
+    slider.style.transition = 'left 0.3s ease';
+    slider.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)';
+    
+    toggle.appendChild(slider);
+    container.appendChild(dragHandle);
+    container.appendChild(label);
+    container.appendChild(toggle);
+    
+    // Toggle function
+    function toggleDfl() {
+      showDfl = !showDfl;
+      if (showDfl) {
+        slider.style.left = '2px';
+        toggle.style.background = '#10b981';
+        label.textContent = 'DFL on';
+      } else {
+        slider.style.left = '22px';
+        toggle.style.background = '#666';
+        label.textContent = 'DFL off';
+      }
+      toggleMasterSwitch();
     }
-}, 50);
+    
+    // Drag functionality
+    let isDragging = false;
+    let hasMoved = false;
+    let dragStartX, dragStartY, startX, startY;
+    
+    container.onmousedown = function(e) {
+      // Don't start drag if clicking on toggle or label
+      if (e.target === toggle || e.target === slider || e.target === label) {
+        return;
+      }
+      isDragging = true;
+      hasMoved = false;
+      container.style.cursor = 'grabbing';
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      startX = container.offsetLeft;
+      startY = container.offsetTop;
+      e.preventDefault();
+    };
+    
+    document.onmousemove = function(e) {
+      if (isDragging) {
+        const deltaX = e.clientX - dragStartX;
+        const deltaY = e.clientY - dragStartY;
+        if (Math.abs(deltaX) > 3 || Math.abs(deltaY) > 3) {
+          hasMoved = true;
+        }
+        
+        // Calculate new position with boundaries
+        let newLeft = startX + deltaX;
+        let newTop = startY + deltaY;
+        
+        // Get container dimensions
+        const containerWidth = container.offsetWidth;
+        const containerHeight = container.offsetHeight;
+        
+        // Constrain to viewport
+        newLeft = Math.max(0, Math.min(newLeft, window.innerWidth - containerWidth));
+        newTop = Math.max(0, Math.min(newTop, window.innerHeight - containerHeight));
+        
+        container.style.left = newLeft + 'px';
+        container.style.top = newTop + 'px';
+      }
+    };
+    
+    document.onmouseup = function() {
+      if (isDragging) {
+        isDragging = false;
+        container.style.cursor = 'grab';
+      }
+    };
+    
+    // Toggle clicks
+    toggle.onclick = toggleDfl;
+    label.onclick = toggleDfl;
+    
+    document.body.appendChild(container);
+  }
+}, 100);
