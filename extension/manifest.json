@@ -1,31 +1,37 @@
 {
-    "name": "Distraction free for Linkedin™",
-    "version": "3.1",
-    "description": "Hide distractions on Linkedin™ when you need to focus.",
-    "manifest_version": 3,
+  "name": "Distraction Free for LinkedIn™",
+  "version": "3.2",
+  "description": "Hide distractions on LinkedIn™ when you need to focus.",
+  "manifest_version": 3,
 
-    "action": {
-        "default_popup": "popup/popup.html"
-      },
+  "action": {
+    "default_popup": "popup/popup.html"
+  },
 
-    "permissions": [
-    ],
+  "icons": {
+    "16": "icons/16.png",
+    "32": "icons/32.png",
+    "48": "icons/48.png",
+    "128": "icons/128.png"
+  },
 
-    "icons": {
-        "16": "icons/16.png",
-        "32": "icons/32.png",
-        "48": "icons/48.png",
-        "128": "icons/128.png"
-    },
+  "permissions": [],
 
-    "content_scripts": [{
-        "matches": ["https://www.linkedin.com/*"],
-        "run_at": "document_start",
-        "js": ["hider/hider.js"]
-    }],
+  "content_scripts": [
+    {
+      "matches": ["https://www.linkedin.com/*"],
+      "run_at": "document_start",
+      "js": ["hider/hider.js"]
+    }
+  ],
 
-    "web_accessible_resources": [{
-        "resources": ["hider/hider-main.css", "hider/hider-switch.css", "hider/hider-newsfeed.css", "hider/hider-network.css", "hider/hider-jobs.css",  "hider/favicon-no-messages.ico"], 
-        "matches": ["https://www.linkedin.com/*"]
-    }]
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "hider/hider.css",
+        "hider/favicon-no-messages.ico"
+      ],
+      "matches": ["https://www.linkedin.com/*"]
+    }
+  ]
 }

@@ -1,0 +1,142 @@
+/* Distraction Free for LinkedIn™ — main stylesheet
+   Strategy: Prefer visibility:hidden over display:none for primary columns/blocks so layout remains stable.
+   Where ads/wrappers should not take space at all, use display:none.
+*/
+
+/* ---------- Global Tweaks ---------- */
+
+/* Hide right sidebar (home + jobs), but keep company admin aside visible */
+.scaffold-layout__aside:not(div.org-admin aside.scaffold-layout__aside) {
+  visibility: hidden;
+}
+
+/* Hide right rail on profile pages (suggestions, Learning, footer) */
+.pv-content__right-rail {
+  visibility: hidden;
+}
+
+/* Remove ads entirely */
+.ad-banner-container,
+#ads-container {
+  display: none !important;
+}
+
+/* Chang notification badge color */
+.notification-badge.notification-badge--show {
+  background-color: #0a66c2 !important;
+}
+
+/* Style Message pane unread count */
+.msg-overlay-bubble-header__unread-count {
+  background-color: #000 !important;
+  border-color: darkgrey !important;
+}
+
+/* ---------- Ad iframes (left rail on My Network, etc.) ---------- */
+
+/* Exact known component */
+iframe[componentkey="MynetworkDesktopNav_mynetwork_desktop_nav_ad"] {
+  display: none !important;
+}
+
+/* Generic ad iframes */
+iframe[title="advertisement"],
+iframe[title*="advert" i],
+iframe[componentkey$="_ad"],
+iframe[componentkey*="-ad"],
+iframe[id*="ad" i] {
+  display: none !important;
+}
+
+/* Hide wrappers that only contain an ad iframe (Chrome supports :has) */
+@supports selector(:has(*)) {
+  :where(section, div, aside, article, .artdeco-card):has(> iframe[title*="advert" i]),
+  :where(section, div, aside, article, .artdeco-card):has(> iframe[componentkey$="_ad"]) {
+    display: none !important;
+  }
+}
+
+/* ---------- LinkedIn Games promos ---------- */
+
+@supports selector(:has(*)) {
+  /* Restrict to main column for safety */
+  main.scaffold-layout__main section:has(a[href="/games/zip/"]) { display: none !important; }
+  main.scaffold-layout__main section:has(.video-js):has(a[href^="/games/"]) { display: none !important; }
+
+  /* More restrictive direct-child guards */
+  section:has(> a[href="/games/zip/"]),
+  section:has(> div > a[href="/games/zip/"]) {
+    display: none !important;
+  }
+}
+
+/* Fallback when :has is not supported: make the cards inert by removing the link */
+a[href="/games/zip/"],
+a[href^="/games/"] {
+  display: none !important;
+}
+
+/* ---------- Home (Feed) ---------- */
+
+/* Hide "feed controls" dropdown */
+main > .mb2.artdeco-dropdown--placement-bottom {
+  visibility: hidden;
+}
+
+/* Hide main newsfeed, but allow individual post pages and activity feeds */
+.feed-shared-update-v2:not(section.fixed-full > .feed-shared-update-v2):not(
+  div:not([data-id]) > .occludable-update > .feed-shared-update-v2
+) {
+  visibility: hidden;
+}
+
+/* Hide "new posts" pill */
+.feed-new-update-pill {
+  visibility: hidden;
+}
+
+/* ---------- My Network ---------- */
+
+/* Hide primary suggestions containers (list + more) */
+.discover-cohort-view--list-item,
+.artdeco-card.mb4.overflow-hidden:first-of-type,
+div[data-launchpad-scroll-anchor="pymk"] {
+  visibility: hidden;
+}
+
+/* Hide "People you may know" section  */
+@supports selector(:has(*)) {
+  section:has(> div h3 + button[aria-label^="Show all suggestions for People you may know"]) {
+    display: none !important;
+  }
+}
+
+/* Fallback: hide cohort cards & actions broadly if :has is unavailable */
+main [role="list"] [data-view-name="cohort-card"],
+main [role="list"] [data-view-name="cohort-card-dismiss"],
+main [role="list"] [data-view-name="edge-creation-connect-action"] {
+  display: none !important;
+}
+
+/* ---------- Jobs ---------- */
+
+/* Hide suggested & recent job searches */
+main > section.jobs-home-recent-searches {
+  visibility: hidden;
+}
+
+/* Hide job recommendations on large & small viewports (where class changes from infinite to finite) */
+main.scaffold-layout__main > div.scaffold-finite-scroll.scaffold-finite-scroll--infinite,
+main.scaffold-layout__main > div.scaffold-finite-scroll.scaffold-finite-scroll--finite {
+  visibility: hidden;
+}
+
+/* Hide mock interview questions sidebar on saved jobs page */
+main > aside[aria-label="Additional information"] {
+  visibility: hidden;
+}
+
+/* Hide jobs page occasional promo */
+.jobs-home-galapagos-promo-board {
+  display: none !important;
+}
