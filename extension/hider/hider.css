@@ -95,6 +95,29 @@ main > .mb2.artdeco-dropdown--placement-bottom {
   visibility: hidden;
 }
 
+/* Hide new main feed container (2025 update) */
+div[data-testid="mainFeed"],
+div[componentkey*="mainFeed"] {
+  visibility: hidden !important;
+}
+
+/* Optional: also catch nested container just in case */
+div[data-testid="mainFeed"] > div {
+  visibility: hidden !important;
+}
+
+/* Hide "LinkedIn News" + "Today's Puzzles" card */
+[componentkey="newsAndGamesCard"] {
+  display: none !important;
+}
+
+/* Fallback: hide any container wrapping it */
+@supports selector(:has(*)) {
+  main.scaffold-layout__main:has([componentkey="newsAndGamesCard"]) {
+    display: none !important;
+  }
+}
+
 /* ---------- My Network ---------- */
 
 /* Hide primary suggestions containers (list + more) */

@@ -200,7 +200,7 @@ function toggleMasterSwitch() {
       border-radius: 50%;
       position: absolute;
       top: 2px;
-      left: ${showDfl ? '2px' : '22px'};
+      left: ${showDfl ? '22px' : '2px'};
       transition: left 0.3s ease;
       box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     `;
@@ -218,11 +218,11 @@ function toggleMasterSwitch() {
     function toggleDfl() {
       showDfl = !showDfl;
       if (showDfl) {
-        slider.style.left = '2px';
+        slider.style.left = '22px'; // 👉 right when ON
         toggle.style.background = '#10b981';
         label.textContent = 'DFL on';
       } else {
-        slider.style.left = '22px';
+        slider.style.left = '2px';  // 👈 left when OFF
         toggle.style.background = '#666';
         label.textContent = 'DFL off';
       }
