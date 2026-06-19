@@ -111,6 +111,11 @@ div[data-testid="mainFeed"] > div {
   display: none !important;
 }
 
+/* Hide LinkedIn News - Updated June 2026 since componentkey changed */
+aside:has(a[href*="/news/story/"]) {
+  display: none !important;
+}
+
 /* Fallback: hide any container wrapping it */
 @supports selector(:has(*)) {
   main.scaffold-layout__main:has([componentkey="newsAndGamesCard"]) {
