@@ -21,6 +21,13 @@
   background-color: #0a66c2 !important;
 }
 
+/* Change top-nav notification badges to blue */
+a[aria-label*="new notification"] span[data-color-scheme],
+button[aria-label*="new notification"] span[data-color-scheme] {
+  background-color: #0a66c2 !important;
+  color: #fff !important;
+}
+
 /* Style Message pane unread count */
 .msg-overlay-bubble-header__unread-count {
   background-color: #000 !important;
