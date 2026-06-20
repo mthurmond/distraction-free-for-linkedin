@@ -10,11 +10,6 @@
   visibility: hidden;
 }
 
-/* Hide right rail on profile pages (suggestions, Learning, footer) */
-.pv-content__right-rail {
-  visibility: hidden;
-}
-
 /* Remove ads entirely */
 .ad-banner-container,
 #ads-container {
@@ -73,6 +68,11 @@ iframe[id*="ad" i] {
 /* Fallback when :has is not supported: make the cards inert by removing the link */
 a[href="/games/zip/"],
 a[href^="/games/"] {
+  display: none !important;
+}
+
+/* Hide Patches promo card */
+div:has(> a[href*="/games/patches/"]) {
   display: none !important;
 }
 
@@ -152,5 +152,27 @@ main > aside[aria-label="Additional information"] {
 
 /* Hide jobs page occasional promo */
 .jobs-home-galapagos-promo-board {
+  display: none !important;
+}
+
+/* ---------- Profile pages ---------- */
+
+/* Hide right rail (suggestions, Learning, footer) */
+.pv-content__right-rail {
+  visibility: hidden;
+}
+
+/* Hide "More profiles for you" */
+[componentkey^="profileAsideBrowsemap"] {
+  display: none !important;
+}
+
+/* Hide "People you may know" */
+[componentkey^="profileAsidePymk"] {
+  display: none !important;
+}
+
+/* Hide "You might like" */
+[componentkey^="profileAsideProduct"] {
   display: none !important;
 }
