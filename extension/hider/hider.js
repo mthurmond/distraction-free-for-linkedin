@@ -209,7 +209,10 @@ function toggleMasterSwitch() {
     container.appendChild(dragHandle);
     container.appendChild(label);
     container.appendChild(toggle);
-    document.body.appendChild(container);
+    
+    const mountTarget = document.body || document.documentElement;
+    if (!mountTarget) return;
+    mountTarget.appendChild(container);
 
     // Apply initial side (from localStorage; defaults to left)
     applySide(currentSide);

@@ -10,11 +10,6 @@
   visibility: hidden;
 }
 
-/* Hide right rail on profile pages (suggestions, Learning, footer) */
-.pv-content__right-rail {
-  visibility: hidden;
-}
-
 /* Remove ads entirely */
 .ad-banner-container,
 #ads-container {
@@ -24,6 +19,13 @@
 /* Chang notification badge color */
 .notification-badge.notification-badge--show {
   background-color: #0a66c2 !important;
+}
+
+/* Change top-nav notification badges to blue */
+a[aria-label*="new notification"] span[data-color-scheme],
+button[aria-label*="new notification"] span[data-color-scheme] {
+  background-color: #0a66c2 !important;
+  color: #fff !important;
 }
 
 /* Style Message pane unread count */
@@ -76,6 +78,11 @@ a[href^="/games/"] {
   display: none !important;
 }
 
+/* Hide Patches promo card */
+div:has(> a[href*="/games/patches/"]) {
+  display: none !important;
+}
+
 /* ---------- Home (Feed) ---------- */
 
 /* Hide "feed controls" dropdown */
@@ -108,6 +115,11 @@ div[data-testid="mainFeed"] > div {
 
 /* Hide "LinkedIn News" + "Today's Puzzles" card */
 [componentkey="newsAndGamesCard"] {
+  display: none !important;
+}
+
+/* Hide LinkedIn News - Updated June 2026 since componentkey changed */
+aside:has(a[href*="/news/story/"]) {
   display: none !important;
 }
 
@@ -147,5 +159,27 @@ main > aside[aria-label="Additional information"] {
 
 /* Hide jobs page occasional promo */
 .jobs-home-galapagos-promo-board {
+  display: none !important;
+}
+
+/* ---------- Profile pages ---------- */
+
+/* Hide right rail (suggestions, Learning, footer) */
+.pv-content__right-rail {
+  visibility: hidden;
+}
+
+/* Hide "More profiles for you" */
+[componentkey^="profileAsideBrowsemap"] {
+  display: none !important;
+}
+
+/* Hide "People you may know" */
+[componentkey^="profileAsidePymk"] {
+  display: none !important;
+}
+
+/* Hide "You might like" */
+[componentkey^="profileAsideProduct"] {
   display: none !important;
 }
