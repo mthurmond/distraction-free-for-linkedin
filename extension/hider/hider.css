@@ -193,6 +193,11 @@ main > aside[aria-label="Additional information"] {
   display: none !important;
 }
 
+/* Hide Explore Premium profiles */
+div:has(> div > [componentKey*="profileAsideBrowse"]) {
+  display: none !important;
+}
+
 /* Hide "People you may know" */
 [componentkey^="profileAsidePymk"] {
   display: none !important;
