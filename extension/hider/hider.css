@@ -214,3 +214,8 @@ div:has(> div > [componentKey*="profileAsideBrowse"]) {
 div:has(> div > div > div > a[href*="premium/products"]) {
   display: none !important;
 }
+
+/* Hide Try premium button */
+div:has(> div > svg[id*="premium-chip"]) {
+    visibility: hidden;
+}
