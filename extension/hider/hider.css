@@ -129,7 +129,11 @@ div[data-testid="mainFeed"] > div {
 }
 
 /* Hide footer */
-div:has(> footer) {
+footer + div {
+  display: none !important;
+}
+
+footer {
   display: none !important;
 }
 
