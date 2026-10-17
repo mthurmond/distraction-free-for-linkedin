@@ -113,8 +113,18 @@ div[data-testid="mainFeed"] > div {
   visibility: hidden !important;
 }
 
-/* Hide "LinkedIn News" + "Today's Puzzles" card */
-[componentkey="newsAndGamesCard"] {
+/* Hide "Today's Puzzles" card */
+:has(> div > div > div > [componentkey="feedRightNavGamesComponentRef"]) {
+  display: none !important;
+}
+
+/* Hide "Add to your feed" card */
+:has(> div > div > div > [href="/mynetwork/discover-hub/"]) {
+  display: none !important;
+}
+
+/* Hide footer */
+div:has(> footer) {
   display: none !important;
 }
 
@@ -125,7 +135,7 @@ aside:has(a[href*="/news/story/"]) {
 
 /* Fallback: hide any container wrapping it */
 @supports selector(:has(*)) {
-  main.scaffold-layout__main:has([componentkey="newsAndGamesCard"]) {
+  main.scaffold-layout__main:has([componentkey="feedRightNavGamesComponentRef"]) {
     display: none !important;
   }
 }
