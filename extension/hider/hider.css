@@ -113,8 +113,27 @@ div[data-testid="mainFeed"] > div {
   visibility: hidden !important;
 }
 
-/* Hide "LinkedIn News" + "Today's Puzzles" card */
-[componentkey="newsAndGamesCard"] {
+/* Show Start post card */
+:has(> div > div > [componentKey="shareboxProfilePictureComponentRef"]) {
+  visibility: visible;
+}
+
+/* Hide "Today's Puzzles" card */
+:has(> div > div > div > [componentkey="feedRightNavGamesComponentRef"]) {
+  display: none !important;
+}
+
+/* Hide "Add to your feed" card */
+:has(> div > div > div > [href="/mynetwork/discover-hub/"]) {
+  display: none !important;
+}
+
+/* Hide footer */
+footer + div {
+  display: none !important;
+}
+
+footer {
   display: none !important;
 }
 
@@ -125,7 +144,7 @@ aside:has(a[href*="/news/story/"]) {
 
 /* Fallback: hide any container wrapping it */
 @supports selector(:has(*)) {
-  main.scaffold-layout__main:has([componentkey="newsAndGamesCard"]) {
+  main.scaffold-layout__main:has([componentkey="feedRightNavGamesComponentRef"]) {
     display: none !important;
   }
 }
@@ -174,6 +193,11 @@ main > aside[aria-label="Additional information"] {
   display: none !important;
 }
 
+/* Hide Explore Premium profiles */
+div:has(> div > [componentKey*="profileAsideBrowse"]) {
+  display: none !important;
+}
+
 /* Hide "People you may know" */
 [componentkey^="profileAsidePymk"] {
   display: none !important;
@@ -182,4 +206,16 @@ main > aside[aria-label="Additional information"] {
 /* Hide "You might like" */
 [componentkey^="profileAsideProduct"] {
   display: none !important;
+}
+
+/* ---------- Premium Promotions ---------- */
+
+/* Hide Unlock Premium tools & Insights */
+div:has(> div > div > div > a[href*="premium/products"]) {
+  display: none !important;
+}
+
+/* Hide Try premium button */
+div:has(> div > svg[id*="premium-chip"]) {
+    visibility: hidden;
 }
