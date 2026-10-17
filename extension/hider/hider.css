@@ -193,3 +193,10 @@ main > aside[aria-label="Additional information"] {
 [componentkey^="profileAsideProduct"] {
   display: none !important;
 }
+
+/* ---------- Premium Promotions ---------- */
+
+/* Hide Unlock Premium tools & Insights */
+div:has(> div > div > div > a[href*="premium/products"]) {
+  display: none !important;
+}
