@@ -113,6 +113,11 @@ div[data-testid="mainFeed"] > div {
   visibility: hidden !important;
 }
 
+/* Show Start post card */
+:has(> div > div > [componentKey="shareboxProfilePictureComponentRef"]) {
+  visibility: visible;
+}
+
 /* Hide "Today's Puzzles" card */
 :has(> div > div > div > [componentkey="feedRightNavGamesComponentRef"]) {
   display: none !important;
